@@ -18,8 +18,8 @@ export class ValueComponent implements OnInit {
       res => {
         this.values = res;
       },
-      err => {
-        console.log(err);
+      errr => {
+        console.log(errr);
       }
     );
   }
