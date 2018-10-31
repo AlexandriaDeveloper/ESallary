@@ -1,0 +1,108 @@
+@import url('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+/* .login-block{
+    background: #DE6262;
+background: -webkit-linear-gradient(to bottom, #56CC9D,#56CB9E );
+background: linear-gradient(to bottom, #56CC9D, #56CB9E);
+float:left;
+width:100%;
+padding : 50px 0;
+} */
+.row {
+  padding: 0;
+  background-color: #13413f;
+  border-radius: 20px;
+}
+
+.banner-sec {
+  /* background: url(https://static.pexels.com/photos/33972/pexels-photo.jpg)
+    no-repeat left bottom; */
+  background-size: cover;
+  min-height: 500px;
+  border-radius: 0 10px 10px 0;
+}
+.banner-img {
+  border-radius: 0 10px 10px 0;
+  background-size: cover;
+  display: block;
+  width: 100%;
+}
+.container {
+  background: #fff;
+  border-radius: 23px;
+  box-shadow: 20px 18px 15px #071b13;
+}
+.carousel-inner {
+  border-radius: 0 10px 10px 0;
+}
+.carousel-caption {
+  text-align: left;
+  left: 5%;
+}
+.login-sec {
+  padding: 50px 30px;
+  position: relative;
+}
+.login-sec .copy-text {
+  position: absolute;
+  width: 80%;
+  bottom: 20px;
+  font-size: 13px;
+  text-align: center;
+}
+.login-sec .copy-text i {
+  color: #78c2ad;
+}
+.login-sec .copy-text a {
+  color: #78c2ad;
+}
+.login-sec h2 {
+  margin-bottom: 30px;
+  font-weight: 800;
+  font-size: 30px;
+  color: #78c2ad;
+}
+.login-sec h2:after {
+  content: ' ';
+  width: 100px;
+  height: 5px;
+  background: #78c2ad;
+  display: block;
+  margin-top: 20px;
+  border-radius: 3px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-login {
+  background: #78c2ad;
+  color: #fff;
+  font-weight: 600;
+}
+.banner-text {
+  width: 70%;
+  position: absolute;
+  bottom: 40px;
+  padding-left: 20px;
+}
+.banner-text h2 {
+  color: #fff;
+  font-weight: 600;
+}
+.banner-text h2:after {
+  content: ' ';
+  width: 100px;
+  height: 5px;
+  background: #fff;
+  display: block;
+  margin-top: 20px;
+  border-radius: 3px;
+}
+.banner-text p {
+  color: #fff;
+}
+.btn-login {
+  background: #092727;
+  color: #fff;
+  font-weight: 600;
+}.btn-login:active{
+  background-color: #78c2ad
+}

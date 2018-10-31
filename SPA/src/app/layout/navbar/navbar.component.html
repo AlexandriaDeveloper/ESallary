@@ -1,0 +1,56 @@
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" style="">
+  <div class="container">
+    <a [routerLink]="[ '/']" class="navbar-brand">MShrif</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" (click)="menuCollapsed = !menuCollapsed"
+      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div [collapse]="menuCollapsed" class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav">
+
+        <li *ngIf="authService.isAuth()" class="nav-item">
+          <button (click)="logOut()" class="btn btn-primary">
+            خروج</button>
+        </li>
+
+      </ul>
+
+      <ul class="nav navbar-nav ml-auto" *ngIf="authService.isAuth()">
+
+        <li (appClickOutside)="test($event)" class="nav-item dropdown" (click)="isCollapsed = !isCollapsed">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes"> <span class="caret"></span>الموظفين</a>
+          <div [collapse]="isCollapsed" class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" href="#">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" [routerLink]="['/login']">Cerulean</a>
+            <a class="dropdown-item" [routerLink]="[ '/emps/upload']">Cosmo</a>
+            <a class="dropdown-item" href="#">Cyborg</a>
+            <a class="dropdown-item" href="#">Darkly</a>
+            <a class="dropdown-item" href="#">Flatly</a>
+            <a class="dropdown-item" href="#">Journal</a>
+            <a class="dropdown-item" href="#">Litera</a>
+            <a class="dropdown-item" href="#">Lumen</a>
+
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">الرئيسيه</a>
+        </li>
+
+        <li *ngIf="authService.isAuth()">
+          <a class="nav-link"> {{authService.decodedToken.unique_name}} أهلا
+
+          </a>
+        </li>
+
+
+      </ul>
+      <ul class="nav navbar-nav ml-auto" *ngIf="!authService.isAuth()">
+        <li class="nav-item">
+          <a [routerLink]="['/login']" class="btn btn-primary">الدخول</a>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

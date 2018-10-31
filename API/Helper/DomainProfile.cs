@@ -9,6 +9,9 @@ namespace API.Helper
         public DomainProfile()
         {
             CreateMap<SignupDto, User>();
+
+
+            CreateMap<User, UserToReturnDto>();
         }
     }
 }

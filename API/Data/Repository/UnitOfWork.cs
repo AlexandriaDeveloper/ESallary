@@ -3,6 +3,7 @@ using API.Data.Interface;
 using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Data.Repository {
     public class UnitOfWork : IUnitOfWork {
@@ -10,7 +11,8 @@ namespace API.Data.Repository {
 
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<User> _signInManager; 
+        private readonly IConfiguration _config;
         private bool _disposed;
 
         public IUserRepository _userRepository;
@@ -18,7 +20,7 @@ namespace API.Data.Repository {
         private readonly IMapper _mapper;
         public IUserRepository UserRepository {
             get {
-                return _userRepository = _userRepository ?? new UserRepository (_context, _mapper, _userManager, _signInManager);
+                return _userRepository = _userRepository ?? new UserRepository (_context,_config, _mapper, _userManager, _signInManager);
             }
         }
         public IValueRepository ValueRepository {
@@ -29,11 +31,14 @@ namespace API.Data.Repository {
         #endregion
 
         #region Constructor
+       
 
         /// <param name="context"></param>
-        public UnitOfWork (DataContext context, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) {
+        public UnitOfWork (DataContext context, IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) {
+           
             _context = context;
             _mapper = mapper;
+             _config = config;
             _userManager = userManager;
             _signInManager = signInManager;
 

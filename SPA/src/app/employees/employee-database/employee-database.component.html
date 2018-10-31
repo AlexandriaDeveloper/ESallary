@@ -1,0 +1,23 @@
+<p>
+  employee-database works!
+</p>
+<app-upload [URL]="employees/UploadEmployees" (uploadedXls)="xlsxUploaded($event)"></app-upload>
+<table *ngIf="items" class="table table-striped ">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th *ngFor="let item of header">
+        {{item}}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let item of items ; let i = index">
+          <span class="">{{i+1}}</span>
+          <td *ngFor="let content of item">
+            {{content}}
+          </td>
+        </tr>
+
+  </tbody>
+</table>

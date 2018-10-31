@@ -1,0 +1,26 @@
+.my-drop-zone {
+  border: dotted 3px lightgray;
+
+}
+.nv-file-over {
+  background-color: red;
+  border: dotted 4px green;
+  cursor: url('../../../assets/cursor/1.svg')
+
+} /* Default class applied to drop zones on over */
+/* .another-file-over-class {
+  border: dotted 3px green;
+} */
+
+html,
+body {
+  height: 100%;
+}
+.my-drop-zone {
+  height: 100px;
+}
+.result-success{
+  color:green;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px black;
+}

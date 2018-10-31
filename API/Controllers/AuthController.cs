@@ -25,18 +25,24 @@ namespace API.Controllers {
             return Ok (user);
         }
 
-
-         [HttpGet ("Login")]
+        [HttpPost ("Login")]
         public async Task<IActionResult> LoginUser (LoginUserDto login) {
-        //   _uow.UserRepository.LoginUser(login)
-            return Ok ();
+            var result = await _uow.UserRepository.LoginUser (login);
+            if (result.Result.Succeeded) {
+                return Ok (result);
+            }
+            return Forbid ();
+            // var result = await _uow.UserRepository.LoginUser (login);
+            // if (result!= null)
+            //     return Ok (result);
+            // return Forbid ();
         }
 
         [HttpPost ("Signup")]
         public async Task<ActionResult> SignUpUser ([FromBody] SignupDto user) {
-            if(user==null)
-                return BadRequest();
-     
+            if (user == null)
+                return BadRequest ();
+
             await _uow.UserRepository.SignupUser (user);
             return Ok (user);
         }
