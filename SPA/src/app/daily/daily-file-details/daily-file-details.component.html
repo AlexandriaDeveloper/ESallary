@@ -1,0 +1,185 @@
+<div class="container">
+  <div class="card-deck">
+    <div class="card bg-primary">
+      <div class="card-header text-right mb-3">
+        بيانات الملف {{ file.name }}
+      </div>
+      <div class="card-body">
+        <div class="row text-right ">
+          <div class="col-4">الباب الموازنى : {{ file.paymentMethod }}</div>
+
+          <div class="col-4">أجمالى الملف : {{ file.totalSum }}</div>
+          <div class="col-4">المدفوعه: {{ file.paymentType }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <h3>ضع الملف هنا</h3>
+
+      <div
+        ng2FileDrop
+        [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+        (fileOver)="fileOverBase($event)"
+        [uploader]="uploader"
+        class="card mb-3  p-3 text-center  my-drop-zone"
+      >
+        Base drop zone <i class="fa fa-cloud-upload fa-3x"></i>
+      </div>
+
+      <input type="file" ng2FileSelect [uploader]="uploader" /><br />
+    </div>
+    <div *ngIf="uploadSuccess">File Upload Successfuly</div>
+    <div
+      class="col-md-12"
+      style="margin-bottom: 40px"
+      *ngIf="uploader?.queue?.length"
+    >
+      <h3>Upload queue</h3>
+      <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">Name</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader?.queue">
+            <td>
+              <strong>{{ item?.file?.name }}</strong>
+            </td>
+            <td *ngIf="uploader.options.isHTML5" nowrap>
+              {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB
+            </td>
+            <td *ngIf="uploader.options.isHTML5"></td>
+            <td *ngIf="uploader.options.isHTML5">
+              <div class="progress" style="margin-bottom: 0;">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  [ngStyle]="{ width: item.progress + '%' }"
+                ></div>
+              </div>
+            </td>
+            <td class="text-center">
+              <span *ngIf="item.isSuccess"
+                ><i class="fa fa-cloud-upload"></i
+              ></span>
+              <span *ngIf="item.isCancel"><i class="fa fa-ban"></i></span>
+              <span *ngIf="item.isError"><i class="fa fa-trash"></i></span>
+            </td>
+            <td nowrap></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+        <div>
+          Queue progress:
+          <div class="progress" style="" *ngIf="uploader?.queue?.length">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [ngStyle]="{ width: uploader.progress + '%' }"
+            ></div>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-success btn-s"
+          (click)="uploader.uploadAll()"
+          [disabled]="!uploader.getNotUploadedItems().length"
+        >
+          <span class="fa fa-cloud-upload"></span> Upload
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning btn-s"
+          (click)="uploader.cancelAll()"
+          [disabled]="!uploader.isUploading"
+        >
+          <span class="fa fa-ban"></span> Cancel all
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-s"
+          (click)="uploader.clearQueue()"
+          [disabled]="!uploader.queue.length"
+        >
+          <span class="fa fa-trash"></span> Remove all
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" (click)="Test()">Click</button>
+
+<table class="table table-striped table-hover text-right">
+  <thead>
+    <th></th>
+    <th>الصافى</th>
+    <th>الأسم</th>
+    <th>الكود</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of sheetData.data">
+      <td>
+        <table
+          *ngIf="row?.suggestedEmployee?.length"
+          class="table table-striped"
+          class="bg-primary"
+        >
+
+          <tbody>
+            <tr *ngFor="let suggested of row.suggestedEmployee ;let i= index">
+              <td scope="row">
+                <div *ngIf="suggested.checked"  style="transition: 4s ease-in" >
+
+
+                  <div *ngFor="let payment of suggested.paymentMethod;let i2= index" class="form-check form-check-inline">
+                    <label class="form-check-label">{{payment}}
+                        <input  class="form-check-input"  type="radio" [value]="payment" [(ngModel)]="suggested.defaultPaymentMethod" name="selectedPayment[{{i}}]"
+                        (change)="paymentToggle(payment,suggested)"
+                        id="" >
+                    </label>
+
+                  </div>
+
+
+
+              </div>
+            </td>
+              <td >{{ suggested.collage }}</td>
+              <td>{{ suggested.name }}</td>
+              <td>{{ suggested.code }}</td>
+              <td>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="checked"
+
+                    (change)="suggestedToggle(suggested,row)"
+                    />
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </td>
+      <td>{{ row?.net }}</td>
+
+      <td>
+        {{ row?.employeeName }}
+      </td>
+      <td>{{ row?.code }}</td>
+    </tr>
+  </tbody>
+</table>

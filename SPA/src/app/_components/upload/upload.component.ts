@@ -1,22 +1,31 @@
 import { environment } from '../../../environments/environment';
 import { EmployeeService } from '../../_services/employee.service';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
-import { WorkSheet, WorkBook, read } from 'xlsx';
+import { WorkSheet, WorkBook, read , utils} from 'xlsx';
 import { Subject, Observable, of, Subscription } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { utils } from 'xlsx';
+
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, OnDestroy {
   baseurl = environment.apiUrl;
-  @Input()URL: string;
-  URL_API = this.baseurl + this.URL;
+  // tslint:disable-next-line:no-input-rename
+  @Input('URL')
+  urlRes: string;
+  URL_API = this.baseurl;
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   private filesSubject: Subject<File>;
@@ -25,7 +34,8 @@ export class UploadComponent implements OnInit {
   private subscription: Subscription;
   @Output()
   public uploadedXls: EventEmitter<UploadResult> = new EventEmitter();
-  constructor(private employeeService: EmployeeService) {
+  @Output()public upload: EventEmitter<any> = new EventEmitter();
+  constructor() {
     this.filesSubject = new Subject();
     this._uploadedXls = this.filesSubject.asObservable().pipe(
       switchMap((file: File) => {
@@ -46,7 +56,6 @@ export class UploadComponent implements OnInit {
       map((wb: WorkBook) => {
         return wb.SheetNames.map((sheetName: string) => {
           const sheet: WorkSheet = wb.Sheets[sheetName];
-          console.log(utils.sheet_to_json(sheet, { header: 1 }));
           return utils.sheet_to_json(sheet, { header: 1 });
         });
       }),
@@ -60,8 +69,9 @@ export class UploadComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
   initilizeUploader() {
+    console.log(this.urlRes);
     this.uploader = new FileUploader({
-      url: this.URL_API,
+      url: this.URL_API + this.urlRes,
       authToken: 'Bearer ' + localStorage.getItem('token'),
       // allowedFileType: ['application/x-zip-compresse'],
       allowedMimeType: [
@@ -79,8 +89,6 @@ export class UploadComponent implements OnInit {
     this.uploader.onAfterAddingAll = file => {
       const FileR = new FileReader();
       FileR.onload = function(e: any) {
-        console.log(e);
-        const filename = file.file.name;
         // pre-process data
         let binary = '';
         const bytes = e.target.result;
@@ -89,34 +97,16 @@ export class UploadComponent implements OnInit {
         for (let i = 0; i < length; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
-        const oFile = read(binary, {
-          type: 'binary',
-          cellDates: true,
-          cellStyles: true
-        });
       };
 
       //  const result = FileR.readAsArrayBuffer(file.formData);
     };
-
-    this.uploader.onCompleteItem = item => {
-      item.onSuccess = res => {
-        this.result.push(item.file);
-        console.log(item);
-        this.uploader.onSuccessItem = (i, response, status, headers) =>
-          this.onSuccessItem(i, response, status, headers);
-      };
+    this.uploader.uploadItem = item => {
+      return this.upload.emit(this.uploader);
     };
+    this.uploader.onCompleteItem = item => {};
   }
-  onSuccessItem(
-    item: FileItem,
-    response: string,
-    status: number,
-    headers: ParsedResponseHeaders
-  ): any {
-    const data = JSON.parse(response);
-    console.log(data);
-  }
+
   ngOnInit() {
     this.initilizeUploader();
     this.subscription = this._uploadedXls.subscribe(this.uploadedXls);
@@ -127,8 +117,9 @@ export class UploadComponent implements OnInit {
       this.filesSubject.next(files[i]);
     }
   }
-  test() {
-    console.log(this.filesSubject.next);
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 export interface UploadResult {

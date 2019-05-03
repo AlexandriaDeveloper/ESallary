@@ -1,0 +1,261 @@
+<div class="container">
+  <!-- Sign up card -->
+  <div class="card person-card text-right pb-5">
+    <div class="card-body">
+      <!-- Sex image -->
+      <div @titleAnimation class="person-img">
+        <img
+          id="img_sex1 "
+          class="arrow-left"
+          src="./../../../assets/img/layersImg/Asset 2.svg"
+        />
+
+        <img
+          id="img_sex2"
+          class="arrow-right"
+          src="./../../../assets/img/layersImg/Asset 3.svg"
+        />
+        <img
+          id="img_sex3"
+          class="face"
+          src="./../../../assets/img/layersImg/Asset 4.svg"
+        />
+      </div>
+
+      <div class="row justify-content-center">
+          <h2 id="who_message" class="card-title">أضف موظف</h2>
+      </div>
+      <div class="row">
+
+        <div class=" col-12 ">
+          <button type="button" (click)="clear()" class="btn btn-clare">
+            مسح <i class="fa fa-trash"></i>
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-save"
+            form="empForm"
+            [disabled]="!empForm.valid"
+          >
+            حفظ <i class="fa fa-save"></i>
+          </button>
+          <div toastContainer></div>
+        </div>
+      </div>
+
+      <!-- First row (on medium screen) -->
+    </div>
+    <form
+      id="empForm"
+      [formGroup]="empForm"
+      (ngSubmit)="submitForm()"
+      autocomplete="off"
+    >
+      <div class="ml-5">
+        <div class="input-group mb-3">
+          <input
+            formControlName="name"
+            name="name"
+            type="text"
+            class="form-control col-9 ml-6 mr-1  mb-0  rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+          />
+
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2  text-right mb-0   ml-1"
+          >
+            اسم الموظف
+          </label>
+        </div>
+
+        <div class="input-group mb-3">
+          <input
+            #id
+            formControlName="id"
+            [appOnlyNumber]="true"
+            name="id"
+            type="text"
+            class="form-control  col-9  rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+
+          />
+
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2 ml-1 text-right "
+          >
+            الرقم القومى</label
+          >
+        </div>
+
+        <div class="input-group mb-3">
+          <input
+            [appOnlyNumber]="true"
+            formControlName="phone"
+            name="phone"
+            type="text"
+            class="form-control  col-9  mr-1 rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+          />
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2  text-right  ml-1"
+          >
+            رقم التليفون</label
+          >
+        </div>
+        <div class="input-group mb-3">
+          <input
+            formControlName="email"
+            name="email"
+            type="email"
+            class="form-control col-9 mr-1 rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+          />
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2 text-right   ml-1"
+          >
+            البريد الالكترونى
+          </label>
+        </div>
+
+        <div class="input-group mb-3 ">
+          <ngx-select
+            #department
+            formControlName="department"
+            class="col-md-9 p-0 m-0"
+            [optionValueField]="id"
+            optionTextField="name"
+            placeholder="أختار القسم"
+            [items]="departmentList"
+            [(ngModel)]="departmentId"
+            [allowClear]="true"
+            [keepSelectedItems]="false"
+            [noAutoComplete]="false"
+            (selectionChanges)="doSelectionChanges($event)"
+            (remove)="clearDepartment()"
+            name="department"
+          ></ngx-select>
+
+          <label
+            class="texteditable"
+            class=" col-form-label col-sm-2 text-right    ml-2 "
+          >
+            القسم
+          </label>
+        </div>
+
+        <div class="input-group  mb-3 ">
+          <ngx-select
+            #greade
+            formControlName="grade"
+            class="col-md-9 p-0 m-0"
+            placeholder="أختار القسم"
+            [items]="gradeList"
+            [allowClear]="true"
+            [keepSelectedItems]="false"
+            [noAutoComplete]="true"
+            name="grade"
+          ></ngx-select>
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2 text-right    ml-2"
+          >
+            الإدارة
+          </label>
+        </div>
+        <div class="input-group  mb-3 ">
+          <ngx-select
+            #department
+            class="col-md-9 p-0 m-0"
+            formControlName="collage"
+            placeholder="أختار الكليه"
+            [items]="collageList"
+            [allowClear]="true"
+            [keepSelectedItems]="false"
+            [noAutoComplete]="true"
+            name="collage"
+          ></ngx-select>
+          <label
+            class="texteditable"
+            class="col-form-label col-sm-2 text-right   ml-2"
+          >
+            القطاع
+          </label>
+        </div>
+        <div class="row justify-content-end text-right   ml-3">
+          <div
+            class="feedback-error"
+            *ngIf="
+              empForm.get('name').hasError('required') &&
+              empForm.get('name').touched
+            "
+            class=""
+          >
+
+          </div>
+        </div>
+        <div class="input-group  mb-3 ">
+          <div
+            *ngIf="
+              empForm.get('name').hasError('required') &&
+              empForm.get('name').touched
+            "
+            class="col-md-9 p-0 m-0"
+          >
+            <small class="feedback-error">
+                    يجب إدخال اسم الموظف
+               <i class="fa fa-info"></i>
+              </small>
+          </div>
+
+
+          <div
+          *ngIf="
+            empForm.get('id').hasError('required') &&
+            empForm.get('id').touched
+          "
+          class="col-md-9 p-0 m-0"
+        >
+          <small class="feedback-error">
+                  يجب إدخال الرقم القومى
+             <i class="fa fa-info"></i>
+            </small>
+        </div>
+
+
+
+
+      <div
+        *ngIf="
+          empForm.get('id').hasError('maxlength') || empForm.get('id').hasError('minlength')
+        "
+        class="col-md-9 p-0 m-0"
+      >
+        <small class="feedback-error">
+         يجب إدخال 14  رقم فقط
+           <i class="fa fa-info"></i>
+          </small>
+      </div>
+          <label
+
+            class="col-form-label col-sm-2 text-right   ml-2"
+          >
+
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

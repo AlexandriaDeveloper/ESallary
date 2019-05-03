@@ -1,0 +1,120 @@
+<div class="modal-header">
+  <div class="pull-left">إضافة حوالة بريديه</div>
+
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="">
+    <form [formGroup]="addPostForm" (ngSubmit)="onSubmitPost()">
+      <div class="border border-color rounded mb-3 p-3">
+        <div class="input-group  mb-3">
+          <ngx-select
+            #postTo
+            (select)="doSelect(postTo)"
+            class=" p-0 m-0 form-control col-9"
+            placeholder="أختار وسيله الدفع"
+            [items]="postList"
+            required
+            [allowClear]="true"
+            [keepSelectedItems]="true"
+            [noAutoComplete]="false"
+            formControlName="postTo"
+            name="postTo"
+          ></ngx-select>
+          <label class="texteditable" class="col-form-label  text-right  col-4">
+            حواله الى
+          </label>
+        </div>
+        <div class="input-group  mb-3">
+          <input
+            #postAddress
+            name="postAddress"
+            type="text"
+            class="num-text col-8 rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+            required
+            formControlName="postAddress"
+            autocomplete="off"
+          />
+          <label class="texteditable" class="col-form-label  text-right  col-4">
+            العنوان
+          </label>
+        </div>
+        <div class="input-group  mb-3">
+          <input
+            #postPhone
+            name="postPhone"
+            type="text"
+            class="num-text col-8 rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+            required
+            formControlName="postPhone"
+            autocomplete="off"
+            [appOnlyNumber]="true"
+
+          />
+          <label class="texteditable" class="col-form-label  text-right  col-4">
+            رقم التليفون
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="text-right">
+          <span
+            class="feedback-error"
+            *ngIf="
+              addPostForm.get('postTo').hasError('required') &&
+              addPostForm.get('postTo').touched
+            "
+          >
+            يجب أختيار نوع الحواله
+
+            <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+        <div class="text-right">
+          <span
+            class="feedback-error"
+            *ngIf="
+              addPostForm.get('postAddress').hasError('required') &&
+              addPostForm.get('postAddress').touched
+            "
+          >
+            يجب إدخال العنوان <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+        <div class="text-right">
+            <span
+              class="feedback-error"
+              *ngIf="
+                addPostForm.get('postPhone').hasError('required') &&
+                addPostForm.get('postPhone').touched
+              "
+            >
+              يجب إدخال رقم التليفون <i class="fa fa-info-circle"></i>
+            </span>
+          </div>
+      </div>
+      <div class="text-center">
+        <button
+          type="submit"
+          [disabled]="!addPostForm.valid"
+          class="btn btn-primary"
+        >
+          حفظ
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

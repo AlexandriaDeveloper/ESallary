@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using API.Data.Interface;
 using API.Models;
 using AutoMapper;
@@ -11,34 +12,108 @@ namespace API.Data.Repository {
 
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager; 
+        private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _config;
         private bool _disposed;
 
         public IUserRepository _userRepository;
-        public IValueRepository _valueRepository;
+        public IEmployeePaymentTypesRepository _employeePaymentRepository;
+        public IEmployeeRepository _employeeRepository;
+        public IEmployeeFinincialDataRepository _employeeFinincialDataRepository;
+        public IBankRepository _bankRepository;
+        public IBankBranchRepository _bankbranchRepository;
+        public IDepartmentRepository _departmentRepository;
+        public IOrderRepository _orderRepository;
+        public IPostRepository _postRepository;
+        public IFinincialAccountRepository _finincialAccountRepository;
+        public IFileRepository _fileRepository;
+        public IFileDetailRepository _fileDetailRepository;
+        public IDailyRepository _dailyRepository;
+        public IFileTypeRepository _fileTypeRepository;
+
         private readonly IMapper _mapper;
-        public IUserRepository UserRepository {
+
+        public DataContext context {
             get {
-                return _userRepository = _userRepository ?? new UserRepository (_context,_config, _mapper, _userManager, _signInManager);
+                return _context;
             }
         }
-        public IValueRepository ValueRepository {
+        public IUserRepository UserRepository {
             get {
-                return _valueRepository = _valueRepository ?? new ValueRepository (_context);
+                return _userRepository = _userRepository ?? new UserRepository (_context, _config, _mapper, _userManager, _signInManager);
+            }
+        }
+
+        public IEmployeeRepository EmployeeRepository {
+            get {
+                return _employeeRepository = _employeeRepository ?? new EmployeeRepository (_context);
+            }
+        }
+        public IEmployeeFinincialDataRepository EmployeeFinincialDataRepository {
+            get {
+                return _employeeFinincialDataRepository = _employeeFinincialDataRepository ?? new EmployeeFinincialDataRepository (_context);
+            }
+        }
+        public IBankRepository BankRepository {
+            get {
+                return _bankRepository = _bankRepository ?? new BankRepository (_context);
+            }
+        }
+        public IBankBranchRepository BankBranchRepository {
+            get {
+                return _bankbranchRepository = _bankbranchRepository ?? new BankBranchRepository (_context);
+            }
+        }
+        public IOrderRepository OrderRepository {
+            get {
+                return _orderRepository = _orderRepository ?? new OrderRepository (_context);
+            }
+        }
+        public IDepartmentRepository DepartmentRepository {
+            get {
+                return _departmentRepository = _departmentRepository ?? new DepartmentRepository (_context);
+            }
+        }
+        public IPostRepository PostRepository {
+            get {
+                return _postRepository = _postRepository ?? new PostRepository (_context);
+            }
+        }
+        public IFinincialAccountRepository FinincialAccountRepository {
+            get {
+                return _finincialAccountRepository = _finincialAccountRepository ?? new FinincialAccountRepository (_context);
+            }
+        }
+        public IFileRepository FileRepository {
+            get {
+                return _fileRepository = _fileRepository ?? new FileRepository (_context);
+            }
+        }
+        public IFileDetailRepository FileDetailRepository {
+            get {
+                return _fileDetailRepository = _fileDetailRepository ?? new FileDetailRepository (_context);
+            }
+        }
+        public IDailyRepository DailyRepository {
+            get {
+                return _dailyRepository = _dailyRepository ?? new DailyRepository (_context);
+            }
+        }
+        public IFileTypeRepository FileTypeRepository {
+            get {
+                return _fileTypeRepository = _fileTypeRepository ?? new FileTypeRepository (_context);
             }
         }
         #endregion
 
         #region Constructor
-       
 
         /// <param name="context"></param>
         public UnitOfWork (DataContext context, IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) {
-           
+
             _context = context;
             _mapper = mapper;
-             _config = config;
+            _config = config;
             _userManager = userManager;
             _signInManager = signInManager;
 
@@ -50,7 +125,7 @@ namespace API.Data.Repository {
         /// İşlemlerin veritabanına kaydedilmesi için bu method tetikleniyor.
         /// </summary>
         /// <returns></returns>
-        public int SaveChanges () {
+        public async Task<int> SaveChangesAsync () {
             using (var transaction = _context.Database.BeginTransaction ()) {
                 try {
                     //Context boş ise hata fırlatıyoruz
@@ -58,7 +133,7 @@ namespace API.Data.Repository {
                         throw new ArgumentException ("Context is null");
                     }
                     //Save changes metodundan dönen int result ı yakalayarak geri dönüyoruz.
-                    int result = _context.SaveChanges ();
+                    int result = await _context.SaveChangesAsync ();
 
                     //Sorun yok ise kuyruktaki tüm işlemleri commit ederek bitiriyoruz.
                     transaction.Commit ();

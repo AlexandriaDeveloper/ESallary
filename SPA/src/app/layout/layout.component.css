@@ -1,7 +1,15 @@
-.container{
-
-
-    /* background: #87c1aa;
+.container {
+  /* background: #87c1aa;
   background: -webkit-linear-gradient(to bottom, #87c1aa,#87c1aa );
   background: linear-gradient(to bottom, #87c1aa, #87c1aa);  */
 }
+router-outlet {
+  display: none;
+}
+.routerContainer {
+  position: relative;
+}
+.routerContainer > * {
+  display: block;
+}
+

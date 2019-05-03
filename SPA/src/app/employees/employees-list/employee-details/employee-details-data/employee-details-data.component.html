@@ -1,0 +1,323 @@
+<div appInputAutoFocus class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button class="btn btn-primary" disabled="true" type="button">
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <input
+    [(ngModel)]="emp.name"
+    name="name"
+    type="text"
+    class="form-control col-9 mr-1"
+    placeholder=""
+    aria-label=""
+    aria-describedby="basic-addon1"
+    disabled="true"
+  />
+
+  <label
+    class="texteditable"
+    class="col-form-label col-sm-2  text-right   ml-1"
+  >
+    اسم الموظف
+  </label>
+</div>
+
+<div appInputAutoFocus class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button
+      class="btn btn-primary"
+      (click)="knownasdisable = !knownasdisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <input
+    #nameInput
+    [(ngModel)]="emp.knownAs"
+    name="knownAs"
+    type="text"
+    class="form-control  col-9  mr-1"
+    placeholder=""
+    aria-label=""
+    aria-describedby="basic-addon1"
+    [disabled]="!knownasdisable"
+    (blur)="(!knownasdisable)"
+  />
+
+  <label
+    class="texteditable"
+    class="col-form-label col-sm-2  text-right   ml-1"
+  >
+    أسم الشهرة</label
+  >
+</div>
+
+<div appInputAutoFocus class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button disabled="true" class="btn btn-primary" type="button">
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <input
+    [(ngModel)]="emp.id"
+    name="id"
+    type="text"
+    class="form-control  col-9  mr-1"
+    placeholder=""
+    aria-label=""
+    aria-describedby="basic-addon1"
+    [disabled]="true"
+  />
+
+  <label class="texteditable" class="col-form-label col-sm-2 ml-1 text-right ">
+    الرقم القومى</label
+  >
+</div>
+
+<div appInputAutoFocus class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button
+      class="btn btn-primary"
+      (click)="phonedisable = !phonedisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <input
+    [(ngModel)]="emp.phone"
+    name="phone"
+    type="text"
+    class="form-control  col-9  mr-1"
+    placeholder=""
+    aria-label=""
+    aria-describedby="basic-addon1"
+    [disabled]="!phonedisable"
+  />
+  <label class="texteditable" class="col-form-label col-sm-2  text-right  ml-1">
+    رقم التليفون</label
+  >
+</div>
+<div appInputAutoFocus class="input-group mb-3">
+  <div class="input-group-prepend">
+    <button
+      class="btn btn-primary"
+      (click)="phonedisable = !phonedisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <input
+    [(ngModel)]="emp.email"
+    name="email"
+    type="email"
+    class="form-control col-9 mr-1"
+    placeholder=""
+    aria-label=""
+    aria-describedby="basic-addon1"
+    [disabled]="!phonedisable"
+  />
+  <label class="texteditable" class="col-form-label col-sm-2 text-right   ml-1">
+    البريد الالكترونى
+  </label>
+</div>
+
+<div class="input-group mb-3 ">
+  <div class="input-group-prepend ">
+    <button
+      class="btn btn-primary"
+      (click)="departmentdisable = !departmentdisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <ngx-select
+    #department
+    class="col-md-9 p-0 m-0"
+    [optionValueField]="id"
+    optionTextField="name"
+    placeholder="أختار القسم"
+    [items]="departments"
+    [allowClear]="true"
+    [keepSelectedItems]="false"
+    [noAutoComplete]="false"
+    [(ngModel)]="emp.department.name"
+    [disabled]="!departmentdisable"
+    (selectionChanges)="doSelectionChanges($event)"
+    (blur)="departmentdisable = false"
+    name="departmentdisable"
+  ></ngx-select>
+
+  <label
+    class="texteditable"
+    class=" col-form-label col-sm-2 text-right    ml-2 "
+  >
+    القسم
+  </label>
+</div>
+
+<div class="input-group  mb-3 ">
+  <div class="input-group-prepend ">
+    <button
+      class="btn btn-primary"
+      [disabled]="true"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <ngx-select
+    #greade
+    class="col-md-9 p-0 m-0"
+    placeholder="أختار القسم"
+    [items]="emp.gradeList"
+    [allowClear]="true"
+    [keepSelectedItems]="false"
+    [noAutoComplete]="true"
+    [(ngModel)]="emp.grade"
+    [disabled]="true"
+    (blur)="depdisable = false"
+    name="grade"
+  ></ngx-select>
+  <label
+    class="texteditable"
+    class="col-form-label col-sm-2 text-right    ml-2"
+  >
+    الإدارة
+  </label>
+</div>
+<div class="input-group  mb-3 ">
+  <div class="input-group-prepend ">
+    <button class="btn btn-primary" [disabled]="true" type="button">
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <ngx-select
+    #department
+    class="col-md-9 p-0 m-0"
+    placeholder="أختار الكليه"
+    [items]="emp.collageList"
+    [allowClear]="true"
+    [keepSelectedItems]="false"
+    [noAutoComplete]="true"
+    [(ngModel)]="emp.collage"
+    [disabled]="true"
+    (blur)="collagedisable = false"
+    name="collage"
+  ></ngx-select>
+  <label class="texteditable" class="col-form-label col-sm-2 text-right   ml-2">
+    القطاع
+  </label>
+</div>
+<div *ngIf="emp.hasBank">
+  <div appInputAutoFocus class="input-group mb-3">
+    <div class="input-group-prepend">
+      <button class="btn btn-primary" disabled="true" type="button">
+        <i class="fa fa-edit"></i>
+      </button>
+    </div>
+    <input
+      [(ngModel)]="emp.bank.bankName"
+      name="bankName"
+      type="text"
+      class="form-control  col-9  mr-1"
+      placeholder=""
+      aria-label=""
+      aria-describedby="basic-addon1"
+      [disabled]="true"
+    />
+    <label
+      class="texteditable"
+      class="col-form-label col-sm-2 text-right   ml-1"
+    >
+      البنك
+    </label>
+  </div>
+  <div appInputAutoFocus class="input-group mb-3">
+    <div class="input-group-prepend">
+      <button class="btn btn-primary" disabled="true" type="button">
+        <i class="fa fa-edit"></i>
+      </button>
+    </div>
+    <input
+      [(ngModel)]="emp.bank.branchName"
+      name="branchName"
+      type="text"
+      class="form-control  col-9  mr-1"
+      placeholder=""
+      aria-label=""
+      aria-describedby="basic-addon1"
+      [disabled]="true"
+    />
+    <label
+      class="texteditable"
+      class="col-form-label col-sm-2 text-right   ml-1"
+    >
+      الفرع
+    </label>
+  </div>
+</div>
+<div class="input-group  mb-3 ">
+  <div class="input-group-prepend">
+    <button
+      class="btn btn-primary"
+      (click)="sallarydisable = !sallarydisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <ngx-select
+    #sallary
+    class="col-md-9 p-0 m-0"
+    placeholder="أختار وسيله الدفع"
+    [items]="paymentOptionsList"
+    [allowClear]="true"
+    [keepSelectedItems]="false"
+    [noAutoComplete]="true"
+    [(ngModel)]="emp.sallaryOption"
+    [disabled]="!sallarydisable"
+    (blur)="sallarydisable = false"
+    name="sallary"
+  ></ngx-select>
+
+  <label
+    class="texteditable"
+    class="col-form-label col-sm-2 text-right    ml-2"
+  >
+    المرتب
+  </label>
+</div>
+<div class="input-group  mb-3 ">
+  <div class="input-group-prepend ">
+    <button
+      class="btn btn-primary"
+      (click)="otherdisable = !otherdisable"
+      type="button"
+    >
+      <i class="fa fa-edit"></i>
+    </button>
+  </div>
+  <ngx-select
+    #other
+    class="col-md-9 p-0 m-0"
+    placeholder="أختار وسيله الدفع"
+    [items]="paymentOptionsList "
+    [allowClear]="true"
+    [keepSelectedItems]="false"
+    [noAutoComplete]="true"
+    [(ngModel)]="emp.otherOption"
+    [disabled]="!otherdisable"
+    (blur)="otherdisable = false"
+    name="other"
+  ></ngx-select>
+  <label class="texteditable" class="col-form-label col-sm-2 text-right  ml-2">
+    المدفوعات الاخرى
+  </label>
+</div>
+
+

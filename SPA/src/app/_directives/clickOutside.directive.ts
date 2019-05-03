@@ -7,33 +7,38 @@ import {
   OnInit
 } from '@angular/core';
 import { Observable, fromEvent } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, delay, map, debounce } from 'rxjs/operators';
 
 @Directive({
   selector: '[appClickOutside]'
 })
 export class ClickOutsideDirective implements OnInit {
   private listening: boolean;
+  private globalClick: Observable<MouseEvent>;
   @Output()
-  appClickOutside = new EventEmitter<Object>();
+  appClickOutside = new EventEmitter<object>();
 
   constructor(private elementRrf: ElementRef) {
     this.listening = false;
-    // this.clickOutside = new EventEmitter<Object>();
+    this.appClickOutside = new EventEmitter();
   }
   @HostListener('document:click', ['$event.target'])
-  public oncClick(targetElement) {
-    const clickedInside = this.elementRrf.nativeElement.contains(targetElement);
-    if (!clickedInside) {
-      this.appClickOutside.emit(false);
-    } else {
-      this.appClickOutside.emit(true);
-    }
-  }
+  // public oncClick(targetElement) {
+  //   const clickedInside = this.elementRrf.nativeElement.contains(targetElement);
+  //   if (!clickedInside) {
+  //     this.appClickOutside.emit(targetElement);
+  //   } else {
+  //     this.appClickOutside.emit(targetElement);
+  //   }
+  // }
   ngOnInit() {
-    fromEvent(document, 'click').subscribe((event: MouseEvent) => {
-      this.onGlobalClick(event);
-    });
+    fromEvent(document, 'click')
+      .pipe(
+        tap(() => (this.listening = true))
+      )
+      .subscribe((event: MouseEvent) => {
+        this.onGlobalClick(event);
+      });
   }
 
   onGlobalClick(event: MouseEvent) {
@@ -41,15 +46,14 @@ export class ClickOutsideDirective implements OnInit {
       if (
         this.isDescendant(this.elementRrf.nativeElement, event.target) === true
       ) {
-        console.log(event);
-
         this.appClickOutside.emit({
-          value: false
+          value: false,
+          element: event.target
         });
       } else {
-        console.log(event);
         this.appClickOutside.emit({
-          value: true
+          value: true,
+          element: event.target
         });
       }
     }

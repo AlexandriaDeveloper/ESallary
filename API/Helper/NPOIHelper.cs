@@ -50,6 +50,10 @@ namespace API.Helper {
                 return ReadSheetFunction (sheet);
             return null;
         }
+        public int GetFirstRowIndex (string SheetName) {
+            ISheet sheet = workbook.GetSheet (SheetName);
+            return sheet.FirstRowNum;
+        }
         private DataTable ReadSheetFunction (ISheet Sheet) {
             if (Sheet != null) {
 
@@ -58,13 +62,15 @@ namespace API.Helper {
             return null;
 
         }
+
         private DataTable SheetToDataTable (ISheet sheet) {
             DataTable dt = new DataTable (sheet.SheetName);
-
+            string[] bans = { "الأجمالى", "الاجمالى", "الإجمالى", "total", "Total", "", " " };
             // write header row
-            IRow headerRow = sheet.GetRow (0);
+            IRow headerRow = sheet.GetRow (sheet.FirstRowNum);
             for (int i = 0; i < headerRow.LastCellNum; i++) {
                 ICell headerCell = headerRow.GetCell (i);
+
                 // int colIndex = headerCell.ColumnIndex;
                 if (headerCell == null) {
                     headerCell = headerRow.CreateCell (i);
@@ -81,12 +87,16 @@ namespace API.Helper {
                 DataRow dataRow = dt.NewRow ();
 
                 for (int i = 0; i < row.LastCellNum; i++) {
+
                     var currentCell = row.GetCell (i);
                     if (currentCell == null) {
                         currentCell = row.CreateCell (i);
                     }
-                    if (currentCell.CellType == CellType.String)
-                        dataRow[i] = currentCell.StringCellValue;
+                    if (currentCell.CellType == CellType.String) {
+                        currentCell.SetCellValue (currentCell.StringCellValue.Trim ());
+                        if (!bans.Contains (currentCell.StringCellValue))
+                            dataRow[i] = currentCell.StringCellValue;
+                    }
                     if (currentCell.CellType == CellType.Numeric)
                         dataRow[i] = currentCell.NumericCellValue.ToString ();
                     if (currentCell.CellType == CellType.Formula) {

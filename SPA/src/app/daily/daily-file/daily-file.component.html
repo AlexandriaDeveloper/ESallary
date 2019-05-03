@@ -1,0 +1,153 @@
+<div class="container ">
+  <div class="card">
+    <div class="card-header align-middle text-center">
+      <div class="person-img" @titleAnimation>
+        <i
+          class="arrow-left fa fa-edit fa-4x face"
+          id="img_sex1 "
+          aria-hidden="true"
+        >
+        </i>
+      </div>
+      <h3 class=" pb-3">إضافه ملف جديد</h3>
+    </div>
+    <div class="card-body">
+      <form
+        #fileForm="ngForm"
+        id="file-Form"
+        class="justify-content-center"
+        (ngSubmit)="submitForm()"
+        autocomplete="off"
+      >
+        <!-- <input type="text" name="name" [(ngModel)]="file.name"/> -->
+
+        <div class="form-row">
+          <div class="value">
+            <div class="input-group">
+              <textarea
+                class="textarea--style-6"
+                name="name"
+                [(ngModel)]="file.name"
+                placeholder="أدخل بيان الأستمارة"
+              ></textarea>
+            </div>
+          </div>
+          <div class="name pl-3 text-right ">
+            بيان الملف
+            <i class="fa fa-file"></i>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="value">
+            <input
+              class="input--style-6"
+              type="text"
+              name="FileNum55"
+              placeholder="إدخل رقم 55"
+              [(ngModel)]="file.fileNum55"
+            />
+          </div>
+          <div class="name pl-3 text-right">
+            رقم 55
+            <i class="fa fa-sitemap"></i>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group value">
+            <div class="input-group-prepend ">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                type="button"
+                (click)="openModal()"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <ngx-select
+              class="col-md "
+              [items]="filesType"
+              name="payment-type"
+              [(ngModel)]="filesType.name"
+              (select)="onChange($event)"
+            >
+            </ngx-select>
+          </div>
+
+          <div class="name pl-3 align-middle text-right">
+            نوع الأستمارة
+            <i class="fa fa-university"></i>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="value">
+            <ngx-select
+              [items]="collagesName"
+              name="payment-type"
+              [(ngModel)]="file.collageName"
+            ></ngx-select>
+          </div>
+
+          <div class="name pl-3 align-middle text-right">
+            الكليه
+            <i class="fa fa-university"></i>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="value">
+            <ngx-select
+              [items]="paymetMethod"
+              name="payment-method"
+              [(ngModel)]="file.paymentMethod"
+            ></ngx-select>
+          </div>
+
+          <div class="name pl-3 text-right">
+            الباب الموازنى
+            <i class="fa fa-map"></i>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="value">
+            <ngx-select
+              [items]="paymetType"
+              name="payment-type"
+              [(ngModel)]="file.paymentType"
+            ></ngx-select>
+          </div>
+
+          <div class="name pl-3 text-right">
+            وسيله الدفع
+            <i class="fa fa-cc-mastercard"></i>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="value">
+            <div class="input-group">
+              <input
+                class="input--style-6"
+                type="number"
+                placeholder="أدخل صافى مبلغ الأستمارة"
+                name="total-sum"
+                [(ngModel)]="file.totalSum"
+              />
+            </div>
+          </div>
+
+          <div class="name pl-3 text-right">
+            المبلغ
+            <i class="fa fa-calculator"></i>
+          </div>
+        </div>
+
+        <div class="form-row  d-flex justify-content-center">
+          <div class="">
+            <button type="submit" class="btn btn-primary bg-success ">
+              حفظ بيان الأستمارة <i class="fa fa-save"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

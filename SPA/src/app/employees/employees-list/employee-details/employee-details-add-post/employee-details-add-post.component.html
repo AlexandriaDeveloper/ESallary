@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="card-header  text-center">
+    <h3 class="card-title ">حواله بريد</h3>
+    <button
+      @bankAnimation
+      *ngIf="!emp.hasPost"
+      class="btn btn-primary"
+      type="button"
+      (click)="openModal()"
+    >
+      إضافه حواله بريديه <i class=" fa fa-plus-square-o"></i>
+    </button>
+  </div>
+  <div class=" card-body">
+    <div *ngIf="emp.hasPost" @bankAnimation class="">
+      <div class="text-right mb-3">
+        <button
+          type="button"
+          (click)="deletePostSequance()"
+          class="btn btn-danger btn-sm rounded"
+        >
+          <i class="fa fa-close"></i>
+        </button>
+      </div>
+
+      <div class="input-group mb-3">
+        <input
+          [ngModel]="emp?.post?.postTo"
+          name="postTo"
+          type="text"
+          class="form-control col-8 mr-0"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          [disabled]="true"
+        />
+        <label class="texteditable" class="col-form-label col-sm-4 text-right ">
+          حواله على
+        </label>
+      </div>
+
+      <div class="input-group mb-3">
+        <input
+          [ngModel]="emp?.post?.postAddress"
+          name="postAddress"
+          type="text"
+          class="form-control mr-0"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          [disabled]="true"
+        />
+        <label class="texteditable" class="col-form-label col-sm-4 text-right ">
+          العنوان
+        </label>
+      </div>
+
+      <div class="input-group mb-3">
+        <input
+          [ngModel]="emp?.post?.postPhone"
+          name="postPhone"
+          type="text"
+          class="form-control mr-0"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          [disabled]="true"
+        />
+        <label class="texteditable" class="col-form-label col-sm-4 text-right ">
+          رقم التليفون
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

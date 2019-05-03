@@ -12,16 +12,17 @@
 
       <h3>Select files</h3>
 
-      <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropped($event)" [uploader]="uploader"
+      <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+      (fileOver)="fileOverBase($event)"
+       (onFileDrop)="fileDropped($event)"
+        [uploader]="uploader"
         class="card bg-primary p-3 text-center mb-3 my-drop-zone">
         <i class="fa fa-upload fa-3x"></i>
-        Drop Employee Files
+        Drop Employee File
         <ng-content></ng-content>
       </div>
 
 
-      Multiple
-      <input  type="file" (change)="onFileChange($event)" #ng2FileSelect ng2FileSelect [uploader]="uploader" multiple /><br />
 
       Single
       <input type="file" (change)="onFileChange($event)"  ng2FileSelect [uploader]="uploader" />

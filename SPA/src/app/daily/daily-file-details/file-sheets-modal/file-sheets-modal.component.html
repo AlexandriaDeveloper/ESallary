@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <div class="pull-left">أختار الصفحات</div>
+
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-right">
+  <div class="container-fluid">
+    <div class="row">
+      <form #f="ngForm" id="f" (ngSubmit)="getSheetData()" >
+        <div class="">
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let sheet of sheets"
+          >
+            <div class=" text-right ">
+              {{ sheet }}
+              <input
+                class="m-2"
+                type="checkbox"
+                value="{{ sheet }}"
+                name="{{ sheet }}"
+                (change)="addSheetName($event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr />
+      </form>
+    </div>
+    <div *ngIf="selectedSheets.length > 0">
+      <div>
+        لقد قمت بأختيار الصفحات
+      </div>
+      <span
+        *ngFor="let item of selectedSheets"
+        class="badge badge-pill badge-primary"
+      >
+        {{ item }}
+      </span>
+    </div>
+    <div class="text-center mt-3">
+      <button form="f" type="submit" class="btn btn-primary rounded"   [disabled]="!f.valid">
+        حفظ
+      </button>
+    </div>
+  </div>
+</div>

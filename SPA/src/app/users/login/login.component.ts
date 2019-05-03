@@ -1,3 +1,4 @@
+import { CustomToastrService } from './../../_services/toastr.service';
 import { AuthService } from './../../_services/auth.service';
 import { AccountService } from './../../_services/account.service';
 import { Login } from './../../_models/account.model';
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private account: AccountService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: CustomToastrService
   ) {}
 
   ngOnInit() {}
@@ -24,8 +26,11 @@ export class LoginComponent implements OnInit {
         this.auth.authUser(x);
         this.router.navigate(['/home']);
       },
-      err => console.log(err),
-      () => 'done'
+      err => {
+        console.log(err);
+        this.toast.showError('اسم المستخدم او كلمه المرور غير صحيحة ');
+      },
+      () => this.toast.showSuccess(`${this.user.userName} اهلا بك`)
     );
   }
 }

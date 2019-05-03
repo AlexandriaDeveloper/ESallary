@@ -1,0 +1,58 @@
+.card {
+  margin-top: 1em;
+  background-color: transparent;
+
+  border: 1px solid #9cab89;
+}
+
+/* IMG displaying */
+.person-card {
+  margin-top: 2em;
+  padding-top: 5em;
+  border: 1px solid #9cab89;
+}
+.card-title {
+  text-align: center;
+  font-family: 'Reem Kufi', sans-serif;
+  color: #9cab89 !important;
+}
+.person-card .person-img {
+  font-family: 'Reem Kufi', sans-serif;
+  width: 10em;
+  position: absolute;
+  top: -4em;
+  left: 50%;
+  margin-left: -5em;
+  border-radius: 100%;
+  /* overflow: hidden; */
+  background-color: transparent;
+  border: 8px solid #9cab89;
+  box-shadow: 7px 6px 2px #0a2a2b
+}
+.face {
+  position: relative;
+  width: 100px;
+  height: 110px;
+  left: -37px;
+  top: 23px;
+  color: #9cab89;
+
+}
+.texteditable{
+  background-color: #d8e2ca !important;
+  color: #0a2a2b !important;
+}
+.ngx-select{
+  background-color: red !important;
+  color: #0a2a2b !important;
+}
+.ngx-select__disabled{
+  background-color: red !important;
+  color: #0a2a2b !important;
+}
+.ngx-select__choices,
+.ngx-select__toggle {
+  direction: rtl;
+  background-color: red !important;
+  color: #0a2a2b !important;
+}

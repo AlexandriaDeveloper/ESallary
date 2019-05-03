@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace DatingApp.API {
     public class Startup {
@@ -35,10 +38,11 @@ namespace DatingApp.API {
         public void ConfigureServices (IServiceCollection services) {
 
             IdentityBuilder builder = services.AddIdentityCore<User> (opt => {
-                opt.Password.RequireDigit = false;
-                opt.Password.RequiredLength = 4;
+                //opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 3;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
+                opt.Password.RequireLowercase=false;
             });
 
             builder = new IdentityBuilder (builder.UserType, typeof (Role), builder.Services);
@@ -60,13 +64,21 @@ namespace DatingApp.API {
 
             services.AddDbContext<DataContext> (x => x.UseSqlServer (con));
             services.AddMvc (options => {
-                //    var policy = new AuthorizationPolicyBuilder ().RequireAuthenticatedUser ().Build ();
-                //   options.Filters.Add (new AuthorizeFilter ());
-            }).SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
+                    //    var policy = new AuthorizationPolicyBuilder ().RequireAuthenticatedUser ().Build ();
+                    //   options.Filters.Add (new AuthorizeFilter ());
+                }).SetCompatibilityVersion (CompatibilityVersion.Version_2_1)
+                .AddJsonOptions (opt => {
+                    opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+            services.Configure<FormOptions> (x => {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = Int64.MaxValue; // In case of multipart
+            });
             services.AddCors ();
             services.AddTransient<Seed> ();
             services.AddScoped<IUnitOfWork, UnitOfWork> ();
             services.AddAutoMapper ();
+            services.AddSwaggerGen (opt => opt.SwaggerDoc ("v1", new Info { Title = "E Finance Project", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,10 +90,19 @@ namespace DatingApp.API {
             }
 
             //     app.UseHttpsRedirection();
-            // seeder.SeedUsers ();
-            app.UseCors (x => x.AllowAnyOrigin ().AllowAnyMethod ().AllowAnyHeader ());
-            app.UseAuthentication();
+
+            seeder.SeedUsers ();
+            seeder.SeedDepartment ();
+            app.UseSwagger ();
+            app.UseSwaggerUI (opt => opt
+                .SwaggerEndpoint ("/swagger/v1/swagger.json", "E Finance Project v1"));
+            app.UseCors (x =>
+                x.AllowAnyOrigin ()
+                .AllowAnyMethod ()
+                .AllowAnyHeader ());
+            app.UseAuthentication ();
             app.UseMvc ();
+
         }
     }
 }

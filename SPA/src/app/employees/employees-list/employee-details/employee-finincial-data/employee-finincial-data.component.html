@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="d-flex flex-row-reverse pb-3">
+    <button class="btn btn-primary  justify-content" (click)="newRow()">
+      Add
+      <i class="fa fa-plus-square-o"></i>
+    </button>
+  </div>
+<div class="border border-primary p-3">
+  <form #f="ngForm" (ngSubmit)="SubmitValue()">
+    <div
+      *ngFor="let emp of empFinance.employeeFinincialDataDto; let i = index"
+      class=" row d-flex flex-row-reverse p-3"
+    >
+    <div class="col-2">
+      <ngx-select
+        #account
+        class="col-md-9 p-0 m-0"
+        placeholder="أختار الحساب"
+        [items]="accounts"
+        [allowClear]="true"
+        [keepSelectedItems]="false"
+        [noAutoComplete]="false"
+        [(ngModel)]="emp.accountId"
+        (select)="doSelectionChanges($event)"
+        name="account[{{ i }}]"
+      ></ngx-select>
+     <!-- {{ emp?.account?.name }} -->
+    </div>
+      <div class=" col-7">
+        <input
+          type="text"
+          class="form-control "
+          name="value[{{ i }}]"
+          [(ngModel)]="emp.value"
+        />
+      </div>
+
+
+      <div class="col-3  d-inline-flex">
+        <div>
+          لا يوجد
+          <input
+            type="radio"
+            class="radio "
+            style="height :15px;width:15px"
+            value="None"
+            name="accountState[{{ i }}]"
+            [(ngModel)]="emp.accountState"
+          />
+        </div>
+        <div>
+          دائن
+          <input
+            type="radio"
+            value="Debit"
+            name="accountState[{{ i }}]"
+            [(ngModel)]="emp.accountState"
+          />
+        </div>
+        <div>
+          مدين
+          <input
+            type="radio"
+            value="Credit"
+            name="accountState[{{ i }}]"
+            [(ngModel)]="emp.accountState"
+            checked
+          />
+        </div>
+      </div>
+    </div>
+    <button
+      *ngIf="empFinance.employeeFinincialDataDto"
+      type="submit"
+      class="btn btn-primary content"
+    >
+      Save
+    </button>
+  </form>
+</div>
+</div>
+

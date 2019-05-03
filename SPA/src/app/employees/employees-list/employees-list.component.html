@@ -1,0 +1,181 @@
+<div id="destination-1"></div>
+<div class="text-right" id="destination-2">
+  <h4>عدد نتائح البحث : {{ pagination.TotalItems || async }}</h4>
+
+</div>
+
+<div style="direction:rtl" class="container-fluid">
+  <table class="right table  table-striped  ">
+    <thead class="text-right" id="destination-1">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col" style="width:10%">الرقم القومى</th>
+        <th scope="col-4" style="width:20%">الأسم</th>
+        <th scope="col" style="width:10%">القسم</th>
+        <th scope="col" style="width:10%">الأدارة</th>
+        <th scope="col" style="width:10%">القطاع</th>
+        <th scope="col " style="width:6%">النوع</th>
+        <th scope="col-2" style="width:15%">نوع المدفوعه</th>
+        <th scope="col" style="width:6%">كود الموظف</th>
+      </tr>
+      <tr>
+        <th class="">
+          <div class="text-right">
+            <button
+              class="btn btn-success btn-add"
+              [routerLink]="['/emps/add']"
+            >
+              أضف موظف <i class="fa fa-user-plus"></i>
+            </button>
+          </div>
+        </th>
+        <th class="">
+          <div class="form-group ">
+            <input
+              tabindex="2"
+              id="nationalId"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الرقم القومى"
+              [(ngModel)]="empParams.nationalId"
+              #id
+            />
+          </div>
+        </th>
+        <th class="">
+          <div class="form-group ">
+            <input
+              tabindex="1"
+              id="name"
+              [(ngModel)]="empParams.name"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الأسم"
+              #name
+            />
+          </div>
+        </th>
+        <th class="">
+          <div class="form-group">
+            <input
+              tabindex="2"
+              id="department"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="القسم"
+              [(ngModel)]="empParams.department"
+              #department
+            />
+          </div>
+        </th>
+        <th class="">
+          <div class="form-group">
+            <input
+              tabindex="2"
+              id="department"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الإدارة"
+              [(ngModel)]="empParams.grade"
+              #grade
+            />
+          </div>
+        </th>
+        <th class="">
+          <div class="form-group">
+            <input
+              tabindex="3"
+              id="collage"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الكليه"
+              [(ngModel)]="empParams.collage"
+              #collage
+            />
+          </div>
+        </th>
+        <th class="">
+          <div *ngFor="let item of genderList; let i = index">
+            <label class="bg-primary">
+              <input
+                type="checkbox"
+                autocomplete="off"
+                value="{{ item.value }}"
+                name="{{ item.value }}"
+                [(ngModel)]="item.checked"
+                (change)="updateGender($event)"
+              />
+              <span class="glyphicon glyphicon-ok"> </span> {{ item.display }}
+            </label>
+          </div>
+        </th>
+        <th class=""></th>
+
+        <th class="">
+          <div class="form-group col-xs-1">
+            <input
+              tabindex="3"
+              id="code"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الكود"
+              [(ngModel)]="empParams.code"
+              #code
+            />
+          </div>
+        </th>
+      </tr>
+
+
+    </thead>
+    <tbody [@bounce]="data.length">
+      <tr
+        app-employee-list-row
+        class="text-right"
+        *ngFor="let item of data"
+        [item]="item"
+        (deleteItem)="empDelete($event)"
+      >
+
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<nav class="navbar fixed-bottom  navbar-light bg-nav">
+  <div class="d-flex justify-content-center  ml-auto">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.TotalItems"
+      [(ngModel)]="pagination.CurrentPage"
+      [itemsPerPage]="pagination.ItemsPerPage"
+      [maxSize]="maxSize"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
+</nav>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>هل تريد حذف الموظف</p>
+    <div>{{ selectedEmp.name }}?</div>
+    <button type="button" class="btn btn-default btn-sm" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="decline()">
+      No
+    </button>
+  </div>
+</ng-template>

@@ -12,6 +12,10 @@
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="NinjaNye.SearchExtensions" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
+

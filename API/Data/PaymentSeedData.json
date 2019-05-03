@@ -1,0 +1,73 @@
+[
+  {
+    "PaymentTypeName": "2-اخرى بطاقات حكومية",
+    "PaymentTypeData": [
+      {
+        "Name": "EmpATMCode"
+      },
+      {
+        "Name": "Active"
+      }
+    ]
+  },
+  {
+    "PaymentTypeName": "3-مرتب تحويلات بنكية",
+    "PaymentTypeData": [
+      {
+        "Name": "EmpBankCode"
+      },
+      {
+        "Name": "BankCode"
+      },
+      {
+        "Name": "BankName"
+      },
+      {
+        "Name": "BranchCode"
+      },
+      {
+        "Name": "BranchName"
+      },
+      {
+        "Name": "Active"
+      }
+    ]
+  },
+  {
+    "PaymentTypeName": "أوامر الدفع",
+    "PaymentTypeData": [
+      {
+        "Name": "OrderBankName"
+      },
+      {
+        "Name": "OrderBranchName"
+      },
+      {
+        "Name": "OrderAccountNum"
+      }
+      ,
+      {
+        "Name": "Active"
+      }
+    ]
+  },
+  {
+    "PaymentTypeName": "حواله بريديه أشخاص",
+    "PaymentTypeData": [
+      {
+        "Name": "PersonalPostAddress"
+      },
+      {
+        "Name": "PersonalPostPhone"
+      } 
+       ,
+      {
+        "Name": "Active"
+      }
+    ]
+  },
+  {
+    "PaymentTypeName": "حواله بريديه صراف",
+    "PaymentTypeData": []
+  }
+]

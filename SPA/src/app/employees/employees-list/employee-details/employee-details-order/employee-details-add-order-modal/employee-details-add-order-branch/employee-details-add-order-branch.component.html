@@ -1,0 +1,73 @@
+<div>
+  <div class=" modal-header">
+    <div class="modal-title">إضافه فرع</div>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="addBranchForm" (ngSubmit)="onSubmitBranch()">
+      <div class="border border-color rounded mb-3 p-3">
+        <div class="input-group  mb-3">
+            <input
+            #bankId
+            name="bankId"
+            type="hidden"
+            formControlName="bankId"
+          />
+          <ngx-select
+            #bankName
+            (select)="doSelect(bankName)"
+            [optionValueField]="id"
+            optionTextField="bankName"
+            class=" p-0 m-0 form-control col-9"
+            placeholder="أختار وسيله الدفع"
+            [items]="bankList"
+            required
+            [allowClear]="true"
+            [keepSelectedItems]="true"
+            [noAutoComplete]="false"
+
+            formControlName="bankName"
+            name="bankName"
+          ></ngx-select>
+          <label class="texteditable" class="col-form-label  text-right  col-4">
+            أسم البنك
+          </label>
+        </div>
+        <div class="input-group  mb-3">
+          <input
+            #branchName
+            name="branchName"
+            type="text"
+            class="num-text col-8 rounded"
+            placeholder=""
+            aria-label=""
+            aria-describedby="basic-addon1"
+            required
+            formControlName="branchName"
+            autocomplete="off"
+          />
+          <label class="texteditable" class="col-form-label  text-right  col-4">
+            أسم الفرع
+          </label>
+        </div>
+
+      </div>
+      <div class="text-center">
+          <button
+            type="submit"
+            [disabled]="!addBranchForm.valid"
+            class="btn btn-primary rounded"
+          >
+            حفظ
+          </button>
+        </div>
+    </form>
+  </div>
+</div>

@@ -1,11 +1,15 @@
-
-<app-navbar ></app-navbar>
+<app-navbar></app-navbar>
 <div class="container-fluid ">
-<router-outlet></router-outlet>
+  <ngx-spinner
+    bdColor="#0a2a2b"
+    size="large"
+    color="#9dac8a"
+    type="square-jelly-box"
+  >
+    <p style="font-size: 20px; color: lightgray">انتظر من فضلك</p>
+  </ngx-spinner>
+  <div class="routerContainer">
 
-
-<!-- <div *ngFor="let item of items">
-  {{item}}
-</div> -->
-
+    <router-outlet #myOutlet="outlet"></router-outlet>
+  </div>
 </div>

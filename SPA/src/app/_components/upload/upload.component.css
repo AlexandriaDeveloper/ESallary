@@ -1,11 +1,18 @@
 .my-drop-zone {
   border: dotted 3px lightgray;
-
+ /* cursor: url('../../../assets/cursor/plus.svg'),move;*/
 }
 .nv-file-over {
-  background-color: red;
-  border: dotted 4px green;
-  cursor: url('../../../assets/cursor/1.svg')
+  cursor: move; /* fallback: no `url()` support or images disabled */
+	cursor: -webkit-grabbing; /* Chrome 1-21, Safari 4+ */
+	cursor:    -moz-grabbing; /* Firefox 1.5-26 */
+	cursor:         grabbing; /* W3C standards syntax, should come least */
+  transition: .3s;
+  background-color: #0e2b28 !important;
+  color: aliceblue;
+  font-size: 15px;
+  border: dotted 4px #205752;
+  cursor: url('../../../assets/cursor/plus.svg');
 
 } /* Default class applied to drop zones on over */
 /* .another-file-over-class {

@@ -1,3 +1,21 @@
-<p>
-  homePage works!
-</p>
+<div class="row justify-content-end  ">
+  <div *ngFor="let item of cards" class="col-2 d-flex  align-items-streatch">
+    <a [routerLink]="[item.link]">
+      <div class="card   bg-primary h-100" style="width: 18rem;">
+        <div class="card-title  align-self-center p-2"><h3>{{ item.title }}</h3></div>
+        <img
+          class="card-img-top align-self-center"
+          [src]="item.image"
+          alt=""
+          style="width:50% ;height :50%"
+        />
+        <div class="card-img-top text-center fa-4x"></div>
+        <div class="card-body text-right">
+          <div *ngFor="let content of item.content">
+            {{ content.msg }}
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

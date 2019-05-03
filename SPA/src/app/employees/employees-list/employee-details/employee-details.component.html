@@ -1,0 +1,58 @@
+<div class="container">
+  <!-- Sign up card -->
+  <div class="card person-card text-right">
+    <div class="card-body">
+      <!-- Sex image -->
+      <div class="person-img" @titleAnimation>
+        <i
+          class="arrow-left fa fa-edit fa-4x face"
+          id="img_sex1 "
+          aria-hidden="true"
+        >
+        </i>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 mb-1 pb-10" @titleAnimation>
+          <h2 id="who_message" class="card-title">{{ title }}</h2>
+          <h5 class="card-title">{{ emp.name }}</h5>
+        </div>
+      </div>
+
+      <!-- First row (on medium screen) -->
+      <form #f="ngForm" (ngSubmit)="test()">
+        <div class="text-center mt-5 mb-5">
+          <button class="btn btn-save">
+            <i class="fa fa-save fa-2x"></i>
+          </button>
+          <button class="btn btn-save " (click)="finance()">
+              <i class="fa fa-money fa-2x"></i>
+
+          </button>
+        </div>
+        <div class="container">
+          <div>
+            <app-employee-details-data
+              [emp]="emp"
+              [departments]="departments"
+            ></app-employee-details-data>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <app-employee-details-add-post
+              [emp]="emp"
+            ></app-employee-details-add-post>
+          </div>
+          <div class="col-sm-6">
+            <app-employee-details-order
+              [emp]="emp"
+            ></app-employee-details-order>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

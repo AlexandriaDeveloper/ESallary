@@ -1,56 +1,121 @@
-<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" style="">
-  <div class="container">
-    <a [routerLink]="[ '/']" class="navbar-brand">MShrif</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" (click)="menuCollapsed = !menuCollapsed"
-      data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div [collapse]="menuCollapsed" class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav">
+<nav
+  class="navbar navbar-expand-lg fixed-top navbar-light bg-nav shadow-lg p-3 mb-5  rounded "
+>
+  <a class="navbar-brand  " href="#">M.Sherif</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    (click)="isCollapsed = !isCollapsed"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-        <li *ngIf="authService.isAuth()" class="nav-item">
-          <button (click)="logOut()" class="btn btn-primary">
-            خروج</button>
-        </li>
-
-      </ul>
-
-      <ul class="nav navbar-nav ml-auto" *ngIf="authService.isAuth()">
-
-        <li (appClickOutside)="test($event)" class="nav-item dropdown" (click)="isCollapsed = !isCollapsed">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes"> <span class="caret"></span>الموظفين</a>
-          <div [collapse]="isCollapsed" class="dropdown-menu" aria-labelledby="themes">
-            <a class="dropdown-item" href="#">Default</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" [routerLink]="['/login']">Cerulean</a>
-            <a class="dropdown-item" [routerLink]="[ '/emps/upload']">Cosmo</a>
-            <a class="dropdown-item" href="#">Cyborg</a>
-            <a class="dropdown-item" href="#">Darkly</a>
-            <a class="dropdown-item" href="#">Flatly</a>
-            <a class="dropdown-item" href="#">Journal</a>
-            <a class="dropdown-item" href="#">Litera</a>
-            <a class="dropdown-item" href="#">Lumen</a>
-
+  <div
+    [collapse]="isCollapsed"
+    class="collapse navbar-collapse"
+    id="navbarSupportedContent"
+  >
+    <ul class="navbar-nav    ml-auto ">
+      <li class="nav-item dropdown" (appClickOutside)="onClickOutside($event)">
+        <a
+          class="nav-link dropdown-toggle my-2 my-lg-0"
+          id="navbarDropdown"
+          role="button"
+          (click)="isCollapsed1 = !isCollapsed1"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          القائمه <i class="fa fa-user"></i>
+        </a>
+        <div
+          [collapse]="isCollapsed1"
+          class="dropdown-menu mega-menu shadow-lg p-3 mb-5  rounded dropdown-menu-right"
+          aria-labelledby="navbarDropdown"
+        >
+          <div class="row">
+            <div class="col-md-3">
+              <p><strong class="sub-menu-heading">قاعدة البيانات</strong></p>
+              <p>
+                <a [routerLink]="['/emps/upload']">
+                  <i class="fa fa-database"></i> تقارير</a
+                >
+              </p>
+              <p><a href="#">Item Number1</a></p>
+              <p><a href="#">Item Number1</a></p>
+              <p><a href="#">Item Number1</a></p>
+            </div>
+            <div class="col-md-3">
+              <p><strong class="sub-menu-heading">Kids Items</strong></p>
+              <p><a href="#">Item Number1</a></p>
+              <p><a href="#">Item Number1</a></p>
+              <p><a href="#">Item Number1</a></p>
+              <p><a href="#">Item Number1</a></p>
+            </div>
+            <div class="col-md-3">
+              <p>
+                <strong class="sub-menu-heading">
+                  الموظفين <i class="fa fa-users"></i>
+                </strong>
+              </p>
+              <p>
+                <a [routerLink]="['/emps/upload']">
+                  تحديث قاعدة البيانات <i class="fa fa-database"></i>
+                </a>
+              </p>
+              <p>
+                <a [routerLink]="['/emps/add']">
+                  إدخال يدوى <i class="fa fa-edit"></i>
+                </a>
+              </p>
+              <p>
+                <a [routerLink]="['/emps/list']">
+                  قائمه الموظفين<i class="fa fa-users"></i>
+                </a>
+              </p>
+              <p>
+                <a [routerLink]="['/emps/restore']">
+                  أستعادة / حذف <i class="fa fa-recycle"></i>
+                </a>
+              </p>
+            </div>
+            <div class="col-md-3">
+              <h4 style="color: #9aa988;">الموظفين</h4>
+              <img
+                src="./../../../assets/img/layersImg/efinance-logo-png-transparent.png"
+                alt="flower"
+                class="img-fluid"
+              />
+            </div>
           </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">الرئيسيه</a>
-        </li>
-
-        <li *ngIf="authService.isAuth()">
-          <a class="nav-link"> {{authService.decodedToken.unique_name}} أهلا
-
-          </a>
-        </li>
-
-
-      </ul>
-      <ul class="nav navbar-nav ml-auto" *ngIf="!authService.isAuth()">
-        <li class="nav-item">
-          <a [routerLink]="['/login']" class="btn btn-primary">الدخول</a>
-
-        </li>
-      </ul>
-    </div>
+        </div>
+      </li>
+      <li class="nav-item ">
+        <a
+          *ngIf="!authService.isAuth()"
+          class="nav-link"
+          [routerLink]="['/login']"
+          >دخول</a
+        >
+        <a
+          *ngIf="authService.isAuth()"
+          style="cursor: pointer"
+          class="nav-link"
+          (click)="logOut()"
+          >خروج</a
+        >
+      </li>
+    </ul>
+    <!--
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    -->
   </div>
-</div>
+</nav>

@@ -43,10 +43,10 @@ namespace API.Data.Repository {
                 var userToReturn = _mapper.Map<User, UserToReturnDto> (user);
                 Genereareted.Token = await GenerateJwtToken (user);
                 Genereareted.User = JsonConvert.SerializeObject (userToReturn);
-               // return Genereareted;
+              
 
             }
-            return Genereareted;
+          return Genereareted;
         }
 
         public async Task<string> GenerateJwtToken (User user) {

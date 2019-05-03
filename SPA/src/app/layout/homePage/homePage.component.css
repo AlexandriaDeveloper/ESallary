@@ -1,0 +1,13 @@
+a {
+  text-decoration: none;
+}
+a > .card {
+background-color: red
+}
+.card:hover{
+  color: #fff;
+  background-color: red;
+}
+.card{
+  border:1px soldi #fff;
+}

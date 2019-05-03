@@ -1,0 +1,50 @@
+.card {
+  margin-top: 1em;
+  background-color: transparent;
+
+  border: 1px solid #9cab89;
+}
+
+/* IMG displaying */
+.person-card {
+  margin-top: 2em;
+  padding-top: 5em;
+  border: 1px solid #9cab89;
+}
+.card-title {
+  text-align: center;
+  font-family: 'Reem Kufi', sans-serif;
+  color: #9cab89 !important;
+}
+.person-card .person-img {
+  font-family: 'Reem Kufi', sans-serif;
+  width: 10em;
+  position: absolute;
+  top: -4em;
+  left: 50%;
+  margin-left: -5em;
+  border-radius: 100%;
+  /* overflow: hidden; */
+  background-color: transparent;
+}
+.face {
+  position: relative;
+  width: 100px;
+  height: 110px;
+  right: 17px;
+}
+.arrow-left {
+  position: absolute;
+  top: -40px;
+  width: 130px !important;
+  height: 130px;
+  right: 5px;
+
+}
+.arrow-right {
+  position: absolute;
+  top: 13px !important;
+  width: 130px !important;
+  height: 130px;
+  right: 2px;
+}

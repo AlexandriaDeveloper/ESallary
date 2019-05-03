@@ -1,5 +1,5 @@
 import { AuthService } from './../../_services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
   isCollapsed = true;
   menuCollapsed = true;
+  isCollapsed1 = true;
   constructor(private authService: AuthService) {}
 
   ngOnInit() {}
@@ -17,5 +18,13 @@ export class NavbarComponent implements OnInit {
   }
   test($event) {
     this.isCollapsed = !$event;
+  }
+
+  onClickOutside(event: object) {
+    if (event && event['value'] === true) {
+      this.isCollapsed1 = true;
+    } else {
+      this.isCollapsed1 = !this.isCollapsed1;
+    }
   }
 }

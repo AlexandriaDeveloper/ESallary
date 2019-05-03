@@ -1,0 +1,9 @@
+<h1>Parent Component</h1>
+<div #entry></div>
+{{ data }}
+<button (click)="generateComponent()">generate</button>
+<button (click)="destroyComponent()">destroy</button>
+<app-test-child>
+    <button #printBtn >Click me</button>
+  <p #insideNgContent>Hello From ContentChild</p>
+</app-test-child>

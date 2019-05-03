@@ -1,0 +1,123 @@
+<div class="modal-header ">
+  <div class="modal-title pull-right">إضافه بيانات امر دفع</div>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="addBankForm" (ngSubmit)="onSubmit()">
+    <div class="border border-color rounded mb-3 p-3">
+      <div class="input-group  mb-3">
+        <input
+          #bankName
+          name="bankName"
+          type="text"
+          class="num-text col-8 rounded"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          required
+          formControlName="bankName"
+          autocomplete="off"
+        />
+        <label class="texteditable" class="col-form-label  text-right  col-4">
+          أسم البنك
+        </label>
+      </div>
+      <div class="input-group mb-3">
+        <input
+          #accountLength
+          name="accountMinLength"
+          type="number"
+          class=" col-2 rounded"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          required
+          formControlName="accountMinLength"
+          autocomplete="off"
+        />
+        <label class="texteditable" class="col-form-label  text-right  col-10">
+          اقل طول لرقم الحساب
+        </label>
+      </div>
+
+      <div class="input-group mb-3">
+        <input
+          #accountLength
+          name="accountMaxLength"
+          type="number"
+          class="form-control col-2 rounded"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+          required
+          formControlName="accountMaxLength"
+          autocomplete="off"
+        />
+        <label class="texteditable" class="col-form-label  text-right  col-10">
+          أقصى طول لرقم الحساب
+        </label>
+      </div>
+      <div @errorAnimation>
+        <div  class="text-right">
+          <span class="feedback-error" *ngIf="addBankForm.hasError('mismatch')">
+            يجب ان يكون الحد الاقصى اكبر من الحد الادنى
+
+            <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+
+        <div @errorAnimation class="text-right">
+          <span
+            class="feedback-error"
+            *ngIf="
+              addBankForm.get('bankName').hasError('required') &&
+              addBankForm.get('bankName').touched
+            "
+          >
+            يجب إدخال اسم البنك <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+
+        <div @errorAnimation class="text-right">
+          <span
+            class="feedback-error"
+            *ngIf="
+              addBankForm.get('accountMinLength').hasError('required') &&
+              addBankForm.get('accountMinLength').touched
+            "
+          >
+            يجب ادنى عدد من الارقام 4 <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+
+        <div @errorAnimation class="text-right">
+          <span
+            class="feedback-error"
+            *ngIf="
+              addBankForm.get('accountMaxLength').hasError('required') &&
+              addBankForm.get('accountMaxLength').touched
+            "
+          >
+            يجب أقصى عدد من الارقام 22 <i class="fa fa-info-circle"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button
+        type="submit"
+        [disabled]="!addBankForm.valid"
+        class="btn btn-primary rounded"
+      >
+        حفظ
+      </button>
+    </div>
+  </form>
+</div>

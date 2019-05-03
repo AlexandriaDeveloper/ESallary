@@ -1,0 +1,124 @@
+<div class="modal-header ">
+  <div class="modal-title pull-right">إضافه بيانات امر دفع</div>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef2.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" autocomplete="nope">
+    <div class="input-group  mb-3 ">
+      <div class="input-group-prepend col-xs-12">
+        <button
+          class="btn btn-primary"
+          (click)="openModalAddBank()"
+          type="button"
+        >
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+
+      <ngx-select
+        #orderBank
+        (select)="doSelect(orderBank)"
+        optionValueField="bankId"
+        optionTextField="bankName"
+        class=" p-0 m-0 form-control col-9"
+        placeholder="أختار وسيله الدفع"
+        [items]="bankList"
+        required
+        [allowClear]="true"
+        [keepSelectedItems]="true"
+        [noAutoComplete]="false"
+        [(ngModel)]="orderBankName"
+        (remove)="doRemove()"
+        name="orderBankName"
+      ></ngx-select>
+
+      <label class="texteditable" class="col-form-label  text-right  col-3">
+        البنك
+      </label>
+    </div>
+
+    <div class="input-group  mb-3 ">
+      <div class="input-group ">
+        <div class="input-group-prepend col-xs-12">
+          <button
+            class="btn btn-primary"
+            (click)="openModalAddBranch(templateNestedBranch)"
+            type="button"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+
+        <ngx-select
+          #orderBankBranch
+          [optionValueField]="id"
+          optionTextField="branchName"
+          (select)="doSelectBranch(orderBankBranch)"
+          class=" p-0 m-0 form-control col-9"
+          required
+          placeholder="أختار وسيله الدفع"
+          [items]="this.selectedBank.branches"
+          [allowClear]="true"
+          [keepSelectedItems]="true"
+          [noAutoComplete]="false"
+          [(ngModel)]="selectedBank.orderBranchName"
+          name="orderBranchName"
+        ></ngx-select>
+
+        <label class="texteditable" class="col-form-label  text-right  col-3">
+          الفرع
+        </label>
+      </div>
+    </div>
+    <div class="input-group  mb-1 ">
+      <div class="input-group-prepend ">
+        <button *ngIf="!accNum.invalid &&(accNum.dirty || accNum.touched)"  class="btn btn-primary" type="button">
+          <i class="fa fa-check"></i>
+        </button>
+        <button *ngIf="accNum.invalid "  class="btn btn-danger" type="button">
+            <i class="fa fa-close "></i>
+          </button>
+      </div>
+      <input
+        #accNum="ngModel"
+        name="accountNumber"
+        type="text"
+        class="form-control col-9"
+        placeholder=""
+        aria-label=""
+        aria-describedby="basic-addon1"
+        required
+        [(ngModel)]="accountNumber"
+        [appOnlyNumber]="true"
+        [autocomplete]="disable"
+        [minlength]="selectedBank?.accountMinLength"
+        [maxlength]="selectedBank?.accountMaxLength"
+      />
+      <label class="texteditable" class="col-form-label  text-right  col-3">
+        رقم الحساب
+      </label>
+
+      <div *ngIf="accNum.hasError('minlength')  || accNum.hasError('maxlength')">
+        <span badge badge-secondary>
+          طول الحساب يجب ان يكون بين -  {{ selectedBank?.accountMinLength }} و {{ selectedBank?.accountMaxLength }}
+         لقد ادخلت
+        {{ accNum.value.length | json }}
+        أرقام
+        </span>
+      </div>
+    </div>
+    <div class="text-center">
+      <button type="submit" [disabled]="!f.valid" class="btn btn-primary">
+        حفظ
+      </button>
+    </div>
+  </form>
+
+</div>

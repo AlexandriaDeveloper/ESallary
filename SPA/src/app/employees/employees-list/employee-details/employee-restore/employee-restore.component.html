@@ -1,0 +1,118 @@
+<div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr class="text-right">
+        <th scope="col-1">الدرجة</th>
+        <th scope="col-1">الكليه</th>
+        <th scope="col-1">الرقم القومى</th>
+        <th scope="col-1">الكود</th>
+        <th scope="col-2">الأسم</th>
+        <th scope="col-1"></th>
+      </tr>
+      <tr>
+          <th class="">
+              <div class="form-group">
+                <input
+                  tabindex="2"
+                  id="grade"
+                  autocomplete="off"
+                  type="text"
+                  class="form-control"
+                  placeholder="الإدارة"
+                  [(ngModel)]="empParams.grade"
+                  #grade
+                />
+              </div>
+            </th>
+            <th class="">
+                <div class="form-group">
+                  <input
+                    tabindex="3"
+                    id="collage"
+                    autocomplete="off"
+                    type="text"
+                    class="form-control"
+                    placeholder="الكليه"
+                    [(ngModel)]="empParams.collage"
+                    #collage
+                  />
+                </div>
+              </th>
+
+        <th class="">
+          <div class="form-group ">
+            <input
+              tabindex="2"
+              id="nationalId"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الرقم القومى"
+              [(ngModel)]="empParams.id"
+              #id
+            />
+          </div>
+        </th>
+        <th class="">
+            <div class="form-group col-xs-1">
+              <input
+                tabindex="3"
+                id="code"
+                autocomplete="off"
+                type="text"
+                class="form-control"
+                placeholder="الكود"
+                [(ngModel)]="empParams.code"
+                #code
+              />
+            </div>
+          </th>
+        <th class="">
+          <div class="form-group ">
+            <input
+              tabindex="1"
+              id="name"
+              [(ngModel)]="empParams.name"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder="الأسم"
+              #name
+            />
+          </div>
+        </th>
+              <th class=""></th>
+
+
+      </tr>
+    </thead>
+    <tbody  [@bounce]="emps.length">
+      <tr
+      (delete) ="removeEmp($event)"
+      (restore) ="restoreEmp($event)"
+        class="text-right"
+        *ngFor="let emp of emps"
+        [app-employee-restore-row]="emp"
+      >
+
+    </tr>
+    </tbody>
+    <nav class="navbar fixed-bottom  navbar-light bg-nav">
+      <div class="d-flex justify-content-center  ml-auto">
+        <pagination
+          [boundaryLinks]="true"
+          [totalItems]="pagination.TotalItems"
+          [(ngModel)]="pagination.CurrentPage"
+          [itemsPerPage]="pagination.ItemsPerPage"
+          [maxSize]="maxSize"
+          (pageChanged)="pageChanged($event)"
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          lastText="&raquo;"
+        >
+        </pagination>
+      </div>
+    </nav>
+  </table>
+</div>

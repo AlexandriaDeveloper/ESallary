@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <div class="pull-right">ملف جديد</div>
+
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   <form  (ngSubmit)="submitForm()" autocomplete="off">
+      <div class="row">
+          <div class="col-8 value">
+            <div class="input-group">
+                <input
+                class="form-control"
+                type="text"
+                name="name"
+                placeholder="إدخل أسم نوع الأستمارة"
+                [(ngModel)]="fileType.name"
+              />
+            </div>
+          </div>
+          <div class="col-4  text-right ">
+           نوع الأستمارة
+            <i class="fa fa-file"></i>
+          </div>
+        </div>
+        <div class="pt-3 d-flex justify-content-center">
+            <div class="">
+              <button type="submit" class="btn btn-primary bg-success ">
+                حفظ بيان الأستمارة <i class="fa fa-save"></i>
+              </button>
+            </div>
+          </div>
+   </form>
+  </div>
+
