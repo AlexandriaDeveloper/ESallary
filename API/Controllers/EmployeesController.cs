@@ -39,17 +39,17 @@ namespace API.Controllers {
         [HttpGet ("getAllEmployees")]
         public async Task<IActionResult> GetAllEmployees ([FromQuery] EmpsParams param) {
             string gender = "";
-            string[] splitedName = param.Name.ToNormalizedString().Split (" ");
+            string[] splitedName = param.Name.ToNormalizedString ().Split (" ");
             if (param.Male == true && param.Female == false) { gender = "Male"; } else if (param.Female == true && param.Male == false) { gender = "Female"; } else if (param.Female == false && param.Male == false) { gender = "None"; }
             var emps = await _uow.EmployeeRepository.Get (param, "Department", x => x.OrderBy (t => t.Name), emp =>
                 splitedName.All (p => emp.KnownAs.Contains (p)) &&
-                //emp.KnownAs.StartsWith (splitedName[0]) &&
+                emp.KnownAs.StartsWith (splitedName[0]) &&
                 emp.NationalId.StartsWith (param.NationalId == null ? string.Empty : param.NationalId) &&
                 emp.Grade.Contains (param.Grade == null ? string.Empty : param.Grade) &&
                 emp.Department.Name.Contains (param.Department) &&
                 emp.Section.Contains (param.Section == null ? string.Empty : param.Section) &&
                 emp.Collage.Contains (param.Collage == null ? string.Empty : param.Collage) &&
-                emp.Code.Contains (param.Code) &&
+                emp.Code.Contains ("") &&
                 emp.Gender.StartsWith (gender) &&
                 emp.Deleted == param.Deleted
             );
@@ -61,17 +61,38 @@ namespace API.Controllers {
 
         }
 
+        [HttpGet ("employeesByName/{empName}")]
+        public async Task<IActionResult> EmployeesByName (string empName) {
+            if (!string.IsNullOrEmpty (empName))
+                empName = empName.ToNormalizedString ();
+
+            var empFromDB = await _uow.EmployeeRepository.Get (x => x.KnownAs.Contains (empName.ToNormalizedString ()) && (x.Code == string.Empty || x.Code == null));
+
+            var empToReturn = _mapper.Map<EmployeeAutoCompleteDto[]> (empFromDB);
+
+            return Ok (empToReturn);
+
+        }
+
+        [HttpGet ("employeesByCode/{code}")]
+        public async Task<IActionResult> EmployeesByCode (string code) {
+            if (!string.IsNullOrEmpty (code))
+                return Ok (await _uow.EmployeeRepository.Get (x => x.Code.Equals (code)));
+            return Ok ();
+
+        }
+
         [HttpGet ("getDeletedEmployees")]
         public async Task<IActionResult> GetDeletedEmployees ([FromQuery] EmpsParams param) {
             param.Deleted = true;
-            var result = GetAllEmployees (param);
+            var result =await GetAllEmployees (param);
             return Ok (result);
 
         }
 
-        [HttpGet ("getEmployeeDetails/{id}")]
-        public async Task<IActionResult> GetEmployeeDetails (int id) {
-            var empFromDb = await _uow.EmployeeRepository.Get (x => x.Id == id, "EmployeeBank,EmployeeOrder,EmployeePost,Department,EmployeeOrder.BankBranch")
+        [HttpGet ("getEmployeeDetails/{NationalId}")]
+        public async Task<IActionResult> GetEmployeeDetails (string NationalId) {
+            var empFromDb = await _uow.EmployeeRepository.Get (x => x.NationalId == NationalId, "EmployeeBank,EmployeeOrder,EmployeePost,Department,EmployeeOrder.BankBranch")
                 .FirstOrDefaultAsync ();
 
             if (empFromDb == null) {
@@ -79,13 +100,37 @@ namespace API.Controllers {
             }
             var empToReturn = _mapper.Map<EmployeDetailsToGetDto> (empFromDb);
             empToReturn = await GetEmployeeOrder (empToReturn, empFromDb);
-            empToReturn = await GetEmployeePost (empToReturn, empFromDb);
+            empToReturn =  GetEmployeePost (empToReturn, empFromDb);
             empToReturn.CollageList = GetCollages ();
             empToReturn.GradeList = GetGrades ();
             // var departments = await _uow.EmployeeRepository.GetDepartmentsList ();
             // empToReturn.DepartmentList = _mapper.Map<List<EmployeeDepartmentDto>> (departments);
 
             return Ok (empToReturn);
+        }
+
+        [HttpPost ("getEmployeeSearchMethod")]
+        public async Task<IActionResult> GetEmployeeSearchMethod (EmployeeAutoCompleteDto model) {
+
+            if (model.Id.HasValue &&  !string.IsNullOrEmpty (model.Code)) {
+                return BadRequest (" من فضلك ابحث اما بالكود او بالاسم فى حالة الموظف ليس له كود فقط");
+            }
+             if (! model.Id.HasValue &&  string.IsNullOrEmpty (model.Code)) {
+                return BadRequest (" من فضلك ابحث اما بالكود او بالاسم فى حالة الموظف ليس له كود فقط");
+            }
+            Employee emp = null;
+            if (model.Id.HasValue) {
+                emp = await _uow.EmployeeRepository.Get (model.Id.Value);
+            }
+            if (!string.IsNullOrEmpty (model.Code)) {
+                emp = _uow.EmployeeRepository.Get (x => x.Code == model.Code).Result.SingleOrDefault ();
+            }
+            if (emp == null)
+                return BadRequest ();
+            var empToReturn = _mapper.Map<EmployeeDataListToReturnDto> (emp);
+            
+            return Ok (empToReturn);
+
         }
 
         [HttpPut ("putEmployeeDetails")]
@@ -208,7 +253,7 @@ namespace API.Controllers {
             if (!model.NationalId.ValidateNtionalId ()) {
                 return BadRequest ("الرقم القومى غير صحيح ");
             }
-            Employee emp = await _uow.EmployeeRepository.Get (model.Id);
+            Employee emp = _uow.EmployeeRepository.Get (x => x.NationalId == model.NationalId).Result.FirstOrDefault ();
             if (emp != null) {
                 return BadRequest ("عفوا الرقم القومى مسجل من قبل ");
             } else {
@@ -223,7 +268,7 @@ namespace API.Controllers {
         }
 
         [HttpPatch ("deleteEmployee/{id}/{state}")]
-        public async Task<IActionResult> DeleteEmployee (string id, bool State) {
+        public async Task<IActionResult> DeleteEmployee (int id, bool State) {
             var employee = await _uow.EmployeeRepository.Get (id);
             if (employee == null) {
                 return NotFound ();
@@ -235,7 +280,7 @@ namespace API.Controllers {
         }
 
         [HttpDelete ("deleteEmployeePermenatly/{id}")]
-        public async Task<IActionResult> DeleteEmployeePermenatly (string id) {
+        public async Task<IActionResult> DeleteEmployeePermenatly (int id) {
             var employee = await _uow.EmployeeRepository.Get (id);
             if (employee == null) {
                 return NotFound ();
@@ -285,8 +330,8 @@ namespace API.Controllers {
         private Employee UpdateEmployeeBasicData (Employee modelToDb, EmployeDetailsToGetDto model) {
             modelToDb.KnownAs = model.KnownAs;
             modelToDb.DepartmentId = model.Department.Id;
-            modelToDb.SallaryOption = model.SallaryOption;
-            modelToDb.OtherOption = model.OtherOption;
+            modelToDb.BankOption = model.BankOption;
+            modelToDb.ATMOption = model.ATMOption;
             modelToDb.Phone = model.Phone;
             modelToDb.Email = model.Email;
             return modelToDb;
@@ -325,11 +370,11 @@ namespace API.Controllers {
                     return null;
                 }
                 modelToDb.HasOrder = false;
-                if (modelToDb.SallaryOption == PaymentTypeConst.PaymentOrder) {
-                    modelToDb.SallaryOption = string.Empty;
+                if (modelToDb.BankOption == PaymentTypeConst.PaymentOrder) {
+                    modelToDb.BankOption = string.Empty;
                 }
-                if (modelToDb.OtherOption == PaymentTypeConst.PaymentOrder) {
-                    modelToDb.OtherOption = string.Empty;
+                if (modelToDb.ATMOption == PaymentTypeConst.PaymentOrder) {
+                    modelToDb.ATMOption = string.Empty;
                 }
                 _uow.OrderRepository.Delete (modelToDelete.SingleOrDefault ());
             }
@@ -355,9 +400,7 @@ namespace API.Controllers {
             }
 
             if (!modelToDb.HasPost && model.HasPost) {
-                if (model.HasPost == null) {
-                    return null;
-                }
+             
                 modelToDb.HasPost = true;
                 modelToDb.EmployeePost = new EmployeePost () {
                     EmployeeId = model.Id,
@@ -372,11 +415,11 @@ namespace API.Controllers {
                     return null;
                 }
                 modelToDb.HasPost = false;
-                if (modelToDb.SallaryOption == PaymentTypeConst.PersonalPost) {
-                    modelToDb.SallaryOption = string.Empty;
+                if (modelToDb.BankOption == PaymentTypeConst.PersonalPost) {
+                    modelToDb.BankOption = string.Empty;
                 }
-                if (modelToDb.OtherOption == PaymentTypeConst.PersonalPost) {
-                    modelToDb.OtherOption = string.Empty;
+                if (modelToDb.ATMOption == PaymentTypeConst.PersonalPost) {
+                    modelToDb.ATMOption = string.Empty;
                 }
                 _uow.PostRepository.Delete (modelToDelete.SingleOrDefault ());
             }
@@ -397,7 +440,7 @@ namespace API.Controllers {
             }
             return empToReturn;
         }
-        private async Task<EmployeDetailsToGetDto> GetEmployeePost (EmployeDetailsToGetDto empToReturn, Employee empFromDb) {
+        private  EmployeDetailsToGetDto GetEmployeePost (EmployeDetailsToGetDto empToReturn, Employee empFromDb) {
             if (empToReturn.HasPost) {
                 empToReturn.Post = new EmployeePostDto () {
                     Id = empFromDb.EmployeeOrder.Id,

@@ -1,3 +1,4 @@
+import { SumPipe } from './_pipe/sum.pipe';
 import { DepartmentService } from './_services/department.service';
 
 import { BankService } from './_services/bank.service';
@@ -47,6 +48,7 @@ export function tokenGetter() {
     NavbarComponent,
     LoginComponent,
     HomePageComponent,
+
 
   ],
   imports: [

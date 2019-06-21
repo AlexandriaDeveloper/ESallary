@@ -61,8 +61,8 @@
     </button>
   </div>
   <input
-    [(ngModel)]="emp.id"
-    name="id"
+    [(ngModel)]="emp.nationalId"
+    name="nationalId"
     type="text"
     class="form-control  col-9  mr-1"
     placeholder=""
@@ -279,7 +279,7 @@
     [allowClear]="true"
     [keepSelectedItems]="false"
     [noAutoComplete]="true"
-    [(ngModel)]="emp.sallaryOption"
+    [(ngModel)]="emp.bankOption"
     [disabled]="!sallarydisable"
     (blur)="sallarydisable = false"
     name="sallary"
@@ -289,7 +289,7 @@
     class="texteditable"
     class="col-form-label col-sm-2 text-right    ml-2"
   >
-    المرتب
+    مدفوعات بنكيه
   </label>
 </div>
 <div class="input-group  mb-3 ">
@@ -310,13 +310,13 @@
     [allowClear]="true"
     [keepSelectedItems]="false"
     [noAutoComplete]="true"
-    [(ngModel)]="emp.otherOption"
+    [(ngModel)]="emp.atmOption"
     [disabled]="!otherdisable"
     (blur)="otherdisable = false"
     name="other"
   ></ngx-select>
   <label class="texteditable" class="col-form-label col-sm-2 text-right  ml-2">
-    المدفوعات الاخرى
+    بطاقات حكوميه
   </label>
 </div>
 

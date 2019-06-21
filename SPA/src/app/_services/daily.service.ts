@@ -25,22 +25,28 @@ export class DailyService {
       })
     );
   }
-  // getSheetsName(sheet) {
-  //   return this.http.post(this.fileUrl, sheet).pipe(
-  //     catchError((err: any) => {
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
-  // getSheetsName(sheet) {
-  //   return this.http.post(this.fileUrl, sheet).pipe(
-  //     catchError((err: any) => {
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
+  getAllSuggestedEmps(name, paymentType) {
+    let params = new HttpParams();
+    params = params.append('name', name);
+    params = params.append('paymentType', paymentType);
+    return this.http
+      .get(this.fileUrl + 'SuggestAllEmployee', { observe: 'response', params })
+      .pipe(
+        catchError((err: any) => {
+          return throwError(err);
+        })
+      );
+  }
+
   getSheetsName(sheet) {
     return this.http.post(this.fileUrl, sheet).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      })
+    );
+  }
+  saveSheetData(sheet) {
+    return this.http.post(this.fileUrl + 'SaveSheetData', sheet).pipe(
       catchError((err: any) => {
         return throwError(err);
       })
@@ -58,6 +64,15 @@ export class DailyService {
         return throwError(err);
       })
     );
+  }
+  deleteEmployeeFileDetail(model) {
+
+
+  return  this.http.post(this.fileUrl + 'deleteData/' , model).pipe(
+    catchError((err: any) => {
+      return throwError(err);
+    })
+  );
   }
   // AddNewFiles(model) {
   //   console.log(model);

@@ -77,6 +77,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.route.data.subscribe(
       data => {
         this.emp = data['emp'];
+        console.log(this.emp);
         this.title = data.titel;
 
         this.selectControl.valueChanges.subscribe(

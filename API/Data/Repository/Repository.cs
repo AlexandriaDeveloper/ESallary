@@ -27,10 +27,17 @@ namespace API.Data.Repository {
             await _dbSet.AddRangeAsync (entity);
         }
         public void Delete (T entity) {
+             
             if (_context.Entry (entity).State == EntityState.Detached) {
                 _context.Attach (entity);
             }
             _dbSet.Remove (entity);
+        }
+            public void DeleteRange (List<T> entity) {
+            if (_context.Entry (entity).State == EntityState.Detached) {
+                _context.Attach (entity);
+            }
+            _dbSet.RemoveRange (entity);
         }
         public void Update (T entity) {
             // _dbSet.Attach (entity);

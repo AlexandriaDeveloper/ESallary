@@ -99,7 +99,7 @@ const routes: Routes = [
   },
   {
     /**?pageNumber=3&pageSize=5 */
-    path: 'details/:id',
+    path: 'details/:nationalId',
     component: EmployeeDetailsComponent,
     data: { titel: 'بيانات الموظف ' },
     canActivate: [AuthGuardService],

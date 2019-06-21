@@ -39,6 +39,7 @@ export class EmployeeDetailsDataComponent implements OnInit, AfterViewInit {
   constructor(private employeeSharedService: EmployeeSharedService) {}
 
   ngOnInit() {
+    console.log(this.emp);
     if (this.emp.hasATM) {
       this.employeeSharedService.pushPaymentList('2-اخرى بطاقات حكومية');
     }

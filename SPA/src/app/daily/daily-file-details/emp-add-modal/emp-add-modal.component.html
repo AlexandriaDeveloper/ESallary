@@ -1,0 +1,115 @@
+<!-- Modal -->
+<div class="modal-header">
+  <div class="pull-left">بحث عن موظف</div>
+
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="hideModal()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body ">
+  <form autocomplete="off"
+  [formGroup]="f"
+   id="f"
+    (ngSubmit)="search()"
+    autocomplete="off">
+    <div class="form-group text-right autocomplete">
+      <label for="">الأسم</label>
+      <ngx-select
+        [allowClear]="true"
+        [items]="items"
+        [formControl]="selectName"
+        (typed)="searchTyped.next($event)"
+        (remove)="clearSearch()"
+      ></ngx-select>
+    </div>
+    <div class="form-group text-right ">
+      <label for="">الكود</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="code"
+        name="code"
+        id="code"
+        placeholder="كود الموظف"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">بحث</button>
+    <button type="button" class="btn btn-default" (click)="clearSearch()">
+      Clear
+    </button>
+  </form>
+<form autocomplete="off" id="f2"   [formGroup]="f2" (ngSubmit)="AddEmployee()">
+  <div >
+  <div formGroupName = "employeeData" class="text-right" >
+    <div class="form-group">
+      <label for="">الأسم </label>
+      <input
+        type="text"
+        class="form-control"
+
+        formControlName="name"
+
+      />
+    </div>
+    <div class="form-group">
+      <label for="">الكليه </label>
+      <input
+        type="text"
+        class="form-control"
+
+        formControlName="collage"
+
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="">الوظيفة </label>
+      <input
+        type="text"
+        class="form-control"
+
+        formControlName="position"
+      />
+    </div>
+  </div>
+    <div class="form-group">
+        <ngx-select
+          [items]="foundEmp.paymentMethod"
+          [formControl]="selectedPaymentMethod"
+          (select)="changePaymentMethod($event)"
+        ></ngx-select>
+      </div>
+    <div class="form-group">
+      <label for="">المبلغ </label>
+      <input
+        type="number"
+        class="form-control"
+        name="net"
+        id="net"
+        aria-describedby="helpId"
+        placeholder=""
+        formControlName="net"
+        required
+      />
+    </div>
+
+  </div>
+  {{f2.valid}}
+  <button type="submit" class="btn btn-primary" >
+      حفظ
+    </button>
+  </form>
+</div>
+{{f2.form?.valid|json}}
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" >
+    Close
+  </button>
+
+</div>

@@ -12,7 +12,7 @@ import { DeleteDialogComponent } from 'src/app/_components/delete-dialog/delete-
       <div class=" btn-group btn-group-sm">
         <a
           class=" btn btn-primary rounded-right"
-          [routerLink]="['/emps/details', item.id]"
+          [routerLink]="['/emps/details', item.nationalId]"
         >
           تفاصيل <i class="fa fa-info-circle"></i>
         </a>
@@ -24,7 +24,7 @@ import { DeleteDialogComponent } from 'src/app/_components/delete-dialog/delete-
     </td>
     <td class="">{{ item.nationalId }}</td>
     <td class="">{{ item.name }}</td>
-    <td class="">{{ item.department }}</td>
+    <td class="">{{ item.department.name }}</td>
     <td class="">{{ item.grade }}</td>
     <td class="">{{ item.collage }}</td>
     <td class="">

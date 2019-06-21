@@ -94,6 +94,22 @@ export class EmployeeService {
         })
       );
   }
+  getEmpByName(name = ''): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('empName', name);
+    return this.http.get<any>(this.url + 'employeesByName/' + name).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      })
+    );
+  }
+  searchEmps(model) {
+    return this.http.post(this.url + 'getEmployeeSearchMethod', model).pipe(
+      catchError((err: any) => {
+        return throwError(err);
+      })
+    );
+  }
   AddNewEmps(model) {
     return this.http.post(this.url + 'addEmployee', model).pipe(
       catchError((err: any) => {

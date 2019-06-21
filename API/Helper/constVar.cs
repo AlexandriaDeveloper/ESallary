@@ -91,4 +91,11 @@ namespace API.Helper {
         Debit,
         None
     }
+
+    public enum FileState{
+        New,
+        Saved,
+        Edited,
+        Deleted
+    }
 }

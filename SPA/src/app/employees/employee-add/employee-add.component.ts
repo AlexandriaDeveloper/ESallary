@@ -76,8 +76,8 @@ export class EmployeeAddComponent implements OnInit {
   initialForm() {
     this.empForm = this.fb.group({
       name: [this.emp.name, [Validators.required]],
-      id: [
-        this.emp.id,
+      nationalId: [
+        this.emp.nationalId,
         [
           Validators.required,
           Validators.minLength(14),
@@ -110,8 +110,8 @@ export class EmployeeAddComponent implements OnInit {
     }
 
     this.employeeService.AddNewEmps(this.emp).subscribe(
-      res => {
-        this.router.navigate(['emps/details/' + this.emp.id]);
+      (res: EmployeeDetailsModel) => {
+        this.router.navigate(['emps/details/' + res.nationalId]);
       },
       err => {
         this.toast.showError('يوجد خطأ' + err.error);

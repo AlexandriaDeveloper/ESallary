@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using API.DTOS;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 
@@ -11,6 +12,8 @@ public class FileDTO {
 
     [Required]
     public string Name { get; set; }
+     [Required]
+    public string Code { get; set; }
 
     [Required]
     //باب اول - باب ثانى - دائن  
@@ -24,7 +27,7 @@ public class FileDTO {
     public int? FileTypeId { get; set; }
 
     [Required]
-    public string CollageName { get; set; }
+    public string Collage{ get; set; }
 
     [Required]
 
@@ -55,36 +58,56 @@ public class FileTypeDTO {
 public class FileDetailsDto {
     [Key]
     public int Id { get; set; }
-    public int? EmployeeId { get; set; }
-
-    public string EmployeeName { get; set; }
-    public string Code { get; set; }
 
     [Required]
     public int FileId { get; set; }
+   
+    
+    public bool Checked { get; set; }=false;
+    public string State { get; set; }
+    public string Warrning { get; set; }
 
-    public string PaymentMethod { get; set; }
+    public string SelectedPaymentMethod { get; set; }
+     public List<string> PaymentMethod{ get; set; }
+
 
     public decimal Net { get; set; }
 
     public List<SuggestionsFileDetailsDto> SuggestedEmployee { get; set; }
+    public EmployeeDataListToReturnDto  EmployeeData { get; set; }    
+    public FileDetailsDto()
+    {
+       this.PaymentMethod= new List<string>();
+       if(EmployeeData ==null)
+       {
+           EmployeeData= new EmployeeDataListToReturnDto();
+       }
+    }
 }
 public class ImportedSheetDto {
 
     public string[] Sheets { get; set; }
     public string Path { get; set; }
-    public string  PaymentType { get; set; }
+    public string PaymentType { get; set; }
     //  public string[] SelectedSheets { get; set; }
 }
 public class SuggestionsFileDetailsDto {
-    public int Id { get; set; }
+
+
+    public int? EmployeeId { get; set; }
     public string Code { get; set; }
+    public string AtmOption { get; set; }
+    public string BankOption { get; set; }
     public string Name { get; set; }
     public string Collage { get; set; }
     public string Position { get; set; }
     public List<string> PaymentMethod { get; set; }
-    public bool Checked { get; set; }=false;
-    public string DefaultPaymentMethod { get; set; }
+    public bool Checked { get; set; } = false;
+    public string SelectedPaymentMethod { get; set; }
+    public bool HasATM { get; set; }
+    public bool HasBank { get; set; }
+    public bool HasOrder { get; set; }
+    public bool HasPost { get; set; }
     public SuggestionsFileDetailsDto () {
         this.PaymentMethod = new List<string> ();
     }

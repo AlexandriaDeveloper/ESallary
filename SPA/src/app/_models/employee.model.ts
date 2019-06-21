@@ -34,7 +34,8 @@ export class EmployeeToAdd {
   phoneNum: string;
 }
 export class EmployeeDetailsModel {
-  id: string;
+  id: number;
+  nationalId: string;
   name: string;
   knownAs?: string;
   phone: string;
@@ -49,8 +50,8 @@ export class EmployeeDetailsModel {
   accountNum: string;
   address: string;
   phoneNum: string;
-  sallaryOption: string;
-  otherOption: string;
+  bankOption: string;
+  atmOption: string;
   hasATM: boolean;
   hasBank: boolean;
   hasOrder: boolean;

@@ -1,20 +1,68 @@
 <div class="container">
   <div class="card-deck">
     <div class="card bg-primary">
-      <div class="card-header text-right mb-3">
-        بيانات الملف {{ file.name }}
-      </div>
-      <div class="card-body">
-        <div class="row text-right ">
-          <div class="col-4">الباب الموازنى : {{ file.paymentMethod }}</div>
+   <div class="card-header  mb-3">
+      <div class=" text-right" >
+          <button class="btn btn-primary text-left" (click)="addFile()">
+              أضف ملف
+             <i class="fa fa-plus"></i>
+            </button>
+       </div>
+      <div class="text-left" style="display: inline-block">      بيانات الملف {{ file.name }}</div>
 
-          <div class="col-4">أجمالى الملف : {{ file.totalSum }}</div>
-          <div class="col-4">المدفوعه: {{ file.paymentType }}</div>
+
+
+   </div>
+      <div class="card-body">
+        <div class=" text-right ">
+          <div class="row">
+              <div class="col-4">الباب الموازنى : {{ file.paymentMethod }}</div>
+
+              <div class="col-4">أجمالى الملف : {{ file.totalSum }}</div>
+              <div class="col-4">المدفوعه: {{ file.paymentType }}</div>
+
+
+          </div>
+          <div class="row text-right">
+              <div class="col-4"  *ngIf="order>0">
+              <a href="#"> <i class="fa fa-file"></i>  </a>
+              <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                اوامر دفع: {{ order }}</div>
+              <div class="col-4"  *ngIf="bank>0">
+                  <a href="#"> <i class="fa fa-file"></i>  </a>
+                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                 تحويلات بنكيه: {{ bank }}</div>
+              <div class="col-4"  *ngIf="atm>0">
+                  <a href="#"> <i class="fa fa-file"></i>  </a>
+                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                بطاقات حكوميه: {{ atm }}</div>
+            </div>
+            <div class="row">
+              <div class="col-4" *ngIf="personalpost>0">
+                <a href="#"> <i class="fa fa-file"></i>  </a>
+                <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                 حوالات شخصيه: {{ personalpost }}</div>
+              <div class="col-4" *ngIf="internalpost>0">
+                  <a href="#"> <i class="fa fa-file"></i>  </a>
+                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                حوالة صراف: {{ internalpost }}</div>
+            </div>
+
+     <div class="row">
+        <div class="col-6" *ngIf="sheetData?.totalSum !== file.totalSum">
+          <i style="color:red" class="fa fa-times"></i> خطأ
+        </div>
+        <div class="col-6" *ngIf="sheetData?.totalSum === file.totalSum">
+          <i style="color:green" class="fa fa-check"></i> صح
+        </div>
+        <div class="col-6">
+          المبلغ الفعلى بالأستمارة: {{ sheetData?.totalSum }}
+        </div></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="showUpload">
     <div class="col-md-12 text-right">
       <h3>ضع الملف هنا</h3>
 
@@ -27,8 +75,16 @@
       >
         Base drop zone <i class="fa fa-cloud-upload fa-3x"></i>
       </div>
-
-      <input type="file" ng2FileSelect [uploader]="uploader" /><br />
+      <div class="form-group text-right">
+        <label class="btn btn-default " for="">
+          <input
+            type="file"
+            class="form-control-file"
+            ng2FileSelect
+            [uploader]="uploader"
+          />
+        </label>
+      </div>
     </div>
     <div *ngIf="uploadSuccess">File Upload Successfuly</div>
     <div
@@ -115,46 +171,124 @@
     </div>
   </div>
 </div>
-<button type="button" (click)="Test()">Click</button>
 
+<div class="text-center">
+  <button
+    class="btn btn-primary btn-lg"
+    type="button"
+    *ngIf="!suggestedEmp?.invalid"
+    (click)="save()"
+  >
+    <i class="fa fa-save"></i>
+    حفظ
+  </button>
+</div>
 <table class="table table-striped table-hover text-right">
   <thead>
-    <th></th>
-    <th>الصافى</th>
-    <th>الأسم</th>
-    <th>الكود</th>
+
+    <tr>
+        <th></th>
+        <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>
+                <button class="btn btn-danger" (click)="deleteEmp()">
+         حذف
+          <i class="fa fa-trash"></i>
+        </button>
+        <button class="btn btn-success" (click)="newEmp()">
+          أضف موظف
+          <i class="fa fa-plus"></i>
+        </button>
+
+      </th>
+    </tr>
+    <tr>
+        <th></th>
+        <th><input type="text" name="" id=" " placeholder="أبحث بالمبلغ" class="form-control" [(ngModel)]="searchFilterData.net" (ngModelChange)="updateFilters()"></th>
+        <th><input type="text" name="position" id=" " placeholder="أبحث بالدرجة" class="form-control" [(ngModel)]="searchFilterData.position" (ngModelChange)="updateFilters()"></th>
+        <th><input type="text" name="department" id=" " placeholder="أبحث بالقسم" class="form-control " [(ngModel)]="searchFilterData.department" (ngModelChange)="updateFilters()"></th>
+        <th><input type="text" name="collage" id=" " placeholder="أبحث الكليه" class="form-control"  [(ngModel)]="searchFilterData.collage" (ngModelChange)="updateFilters()"></th>
+        <th><input type="text" name="paymentMethod" id=" " placeholder="أبحث وسيلة الدفع" class="form-control"  [(ngModel)]="searchFilterData.paymentMethod" (ngModelChange)="updateFilters()" ></th>
+        <th><input type="text" name="employeeName" id=" " [(ngModel)]="searchFilterData.employeeName" (ngModelChange)="updateFilters()" placeholder="أبحث بالأسم" class="form-control"></th>
+        <th class="w-1"><input type="text" name="" id=" " [(ngModel)]="searchFilterData.employeeCode" (ngModelChange)="updateFilters()"  placeholder="أبحث بالكود" class="form-control"></th>
+        <th class="w-1"></th>
+        <th></th>
+
+      </tr>
+    <tr>
+      <th></th>
+      <th>الصافى</th>
+      <th>الدرجة</th>
+      <th>القسم</th>
+      <th>الكليه</th>
+      <th>وسيله الدفع</th>
+      <th>الأسم</th>
+      <th class="w-1">الكود</th>
+      <th class="w-1">أختيار
+
+        <input type="checkbox" name="checkAll" (change)="toggleCheckbox()" id="">
+      </th>
+
+      <th></th>
+    </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let row of sheetData.data">
+  <tbody [@bounce]="sheetData?.data.length">
+    <tr
+      *ngFor="let row of sheetData?.data | searchFilter
+      :searchFilterData.employeeName
+      :searchFilterData.employeeCode
+      :searchFilterData.paymentMethod
+      :searchFilterData.collage
+      :searchFilterData.department
+      :searchFilterData.position
+      :searchFilterData.net  ;
+       let i = index"
+      [ngClass]="{ 'suggested': row?.suggestedEmployee?.length > 0 ,'isdeleted' :row?.state ==='deleted' }"
+    >
       <td>
         <table
           *ngIf="row?.suggestedEmployee?.length"
-          class="table table-striped"
-          class="bg-primary"
+          class="table table-striped bg-primary table-suggest"
         >
-
-          <tbody>
-            <tr *ngFor="let suggested of row.suggestedEmployee ;let i= index">
+          <tbody >
+            <tr   *ngFor="let suggested of row.suggestedEmployee; let i = index">
               <td scope="row">
-                <div *ngIf="suggested.checked"  style="transition: 4s ease-in" >
-
-
-                  <div *ngFor="let payment of suggested.paymentMethod;let i2= index" class="form-check form-check-inline">
-                    <label class="form-check-label">{{payment}}
-                        <input  class="form-check-input"  type="radio" [value]="payment" [(ngModel)]="suggested.defaultPaymentMethod" name="selectedPayment[{{i}}]"
-                        (change)="paymentToggle(payment,suggested)"
-                        id="" >
+                <div *ngIf="suggested.checked" style="transition: 4s ease-in">
+                  <div
+                    *ngFor="
+                      let payment of suggested.paymentMethod;
+                      let i2 = index
+                    "
+                    class="form-check form-check-inline"
+                  >
+                    <label class="form-check-label"
+                      >{{ payment }}
+                      <input
+                        #suggestedEmp="ngModel"
+                        required
+                        class="form-check-input"
+                        type="radio"
+                        [value]="payment"
+                        [(ngModel)]="suggested.selectedPaymentMethod"
+                        name="selectedPayment[{{ i }}]"
+                        (change)="paymentToggle(payment, suggested)"
+                        id=""
+                      />
                     </label>
-
                   </div>
-
-
-
-              </div>
-            </td>
-              <td >{{ suggested.collage }}</td>
-              <td>{{ suggested.name }}</td>
+                </div>
+              </td>
+              <td>{{ suggested.position }}</td>
+              <td>{{ suggested.collage }}</td>
               <td>{{ suggested.code }}</td>
+              <td>{{ suggested.name }}</td>
+
               <td>
                 <div class="form-check form-check-inline">
                   <label class="form-check-label">
@@ -162,24 +296,71 @@
                       class="form-check-input"
                       type="radio"
                       name="checked"
-
-                    (change)="suggestedToggle(suggested,row)"
+                      (change)="suggestedToggle(suggested, row)"
                     />
                   </label>
                 </div>
               </td>
+              <td>
+                <button
+                  class="btn btn-primary text-center"
+                  type="button"
+                  (click)="assignEmployee(suggested, row)"
+                >
+                  اختار
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="8">
+                <button class="btn btn-success" (click)="moreSuggestion(row)">
+                  المزيد
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
-
-
       </td>
       <td>{{ row?.net }}</td>
 
+      <td>{{ row?.employeeData?.department?.name }}</td>
+      <td>{{ row?.employeeData.collage }}</td>
       <td>
-        {{ row?.employeeName }}
+        {{ row?.selectedPaymentMethod }}
       </td>
-      <td>{{ row?.code }}</td>
+
+      <td
+        [ngClass]="{
+          isnew: row.state === 'new',
+          isedited: row.state === 'updated',
+          issaved: row.state === 'saved'
+        }"
+      >
+        {{ row?.employeeData.name }} &nbsp;&nbsp;&nbsp;
+        <i class="fa fa-file " *ngIf="row?.state === 'new'"> </i>
+        <i class="fa fa-edit " *ngIf="row?.state === 'updated'"> </i>
+        <i class="fa fa-save " *ngIf="row?.state === 'saved'"> </i>
+        &nbsp;
+        <i
+          style="color:yellowgreen"
+          *ngIf="row?.warrning"
+          class="fa fa-info-circle "
+          tooltip="{{ row.warrning }}"
+        ></i>
+      </td>
+      <td>{{ row?.employeeData.code }}</td>
+<td><input type="checkbox" name="checked" id="checked" [(ngModel)]="row.checked"></td>
+      <td>
+        <div class="input-group">
+          <!-- <button class="btn btn-danger btn sm" (click)= "deleteEmp(row,i)">
+            حذف <i class="fa fa-trash"></i>
+          </button> -->
+          <button class="btn btn-primary btn-sm" (click)= "selectEmp(row,i)">
+            تعديل <i class="fa fa-edit"></i>
+
+          </button>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

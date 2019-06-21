@@ -74,8 +74,8 @@
 
         <div class="input-group mb-3">
           <input
-            #id
-            formControlName="id"
+            #nationalId
+            formControlName="nationalId"
             [appOnlyNumber]="true"
             name="id"
             type="text"
@@ -223,8 +223,8 @@
 
           <div
           *ngIf="
-            empForm.get('id').hasError('required') &&
-            empForm.get('id').touched
+            empForm.get('nationalId').hasError('required') &&
+            empForm.get('nationalId').touched
           "
           class="col-md-9 p-0 m-0"
         >
@@ -239,7 +239,7 @@
 
       <div
         *ngIf="
-          empForm.get('id').hasError('maxlength') || empForm.get('id').hasError('minlength')
+          empForm.get('nationalId').hasError('maxlength') || empForm.get('nationalId').hasError('minlength')
         "
         class="col-md-9 p-0 m-0"
       >

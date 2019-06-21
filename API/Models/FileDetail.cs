@@ -7,6 +7,7 @@ namespace API.Models
         [Key]
         public int Id { get; set; }
         public int? EmployeeId { get; set; }
+        public string Code { get; set; }
 
         public string EmployeeName { get; set; }
 
@@ -20,6 +21,9 @@ namespace API.Models
         public decimal Net { get; set; }
         public File File { get; set; }
         public Employee Employee { get; set; }
-
+public FileDetail()
+{
+  
+}
     }
 }

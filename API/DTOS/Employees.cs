@@ -21,22 +21,81 @@ namespace API.DTOS {
         public string NationalId { get; set; }
         public string Name { get; set; }
         public string Collage { get; set; }
-        public string Department { get; set; }
+        public DepartmentDto Department { get; set; }
         public string Grade { get; set; }
+        public string Position { get; set; }
         public string Gender { get; set; }
         public string Code { get; set; }
-        public PaymentTypeDto EmployeePaymentType { get; set; }
+        private bool hasATM;
+        public bool HasATM {
+            get {
+                if (hasATM) {
+                    this.PaymentMethod.Add (PaymentTypeConst.ATM);
+                }
+                return hasATM;
+            }
+            set {
+                hasATM = value;
+            }
+        }
+        private bool hasBank;
+        public bool HasBank {
+            get {
+                if (hasBank) {
+                    this.PaymentMethod.Add (PaymentTypeConst.Bank);
+                }
+                return hasBank;
+            }
+            set {
+                hasBank = value;
+            }
+        }
+
+        private bool hasOrder;
+        public bool HasOrder {
+            get {
+                if (hasOrder) {
+                    this.PaymentMethod.Add (PaymentTypeConst.PaymentOrder);
+                }
+                return hasOrder;
+            }
+            set {
+                hasOrder = value;
+            }
+        }
+        private bool hasPost;
+        public bool HasPost {
+            get {
+                if (hasPost) {
+                    this.PaymentMethod.Add (PaymentTypeConst.PersonalPost);
+                }
+                return hasPost;
+            }
+            set {
+                hasPost = value;
+            }
+        }
+
+        public string ATMOption { get; set; }
+        public string BankOption { get; set; }
+        public List<string> PaymentMethod { get; set; }
+        //public PaymentTypeDto EmployeePaymentType { get; set; }
 
         public EmployeeDataListToReturnDto () {
-            this.EmployeePaymentType = new PaymentTypeDto ();
+            //  this.EmployeePaymentType = new PaymentTypeDto ();
+            PaymentMethod = new List<string> ();
+            PaymentMethod.Add (PaymentTypeConst.InternalPost);
+
         }
     }
-    public class PaymentTypeDto {
-        public bool HasATM { get; set; }
-        public bool HasOrder { get; set; }
-        public bool HasBank { get; set; }
-        public bool HasPost { get; set; }
-    }
+    // public class PaymentTypeDto {
+    //     public bool HasATM { get; set; }
+    //     public bool HasOrder { get; set; }
+    //     public bool HasBank { get; set; }
+    //     public bool HasPost { get; set; }
+    //     public string ATMOption { get; set; }
+    //     public string BankOption { get; set; }
+    // }
     // public class EmployeeAddToReturnDto {
     //     public List<string> CollageList { get; set; }
     //     public List<string> DepartmentList { get; set; }
@@ -44,8 +103,9 @@ namespace API.DTOS {
     // }
     public class EmployeeAddItemDto {
         public int Id { get; set; }
-        
+
         public string NationalId { get; set; }
+
         public string KnownAs { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
@@ -67,8 +127,8 @@ namespace API.DTOS {
         public string Phone { get; set; }
         public string Collage { get; set; }
         public string Section { get; set; }
-        public string SallaryOption { get; set; }
-        public string OtherOption { get; set; }
+        public string BankOption { get; set; }
+        public string ATMOption { get; set; }
         public string Grade { get; set; }
         public EmployeeDepartmentDto Department { get; set; }
         public string Email { get; set; }
@@ -88,7 +148,12 @@ namespace API.DTOS {
 
         }
 
-      //  public bool HaveData { get { return this.Bank!= null ? true : false; } }
+        //  public bool HaveData { get { return this.Bank!= null ? true : false; } }
+    }
+    public class EmployeeAutoCompleteDto {
+        public int? Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
     public class EmployeeBankDto {
 
@@ -140,7 +205,7 @@ namespace API.DTOS {
             this.EmployeeFinincialDataDto = new Collection<EmployeeFinincialDataDto> ();
 
         }
-     
+
     }
 
     public class EmployeeFinincialDataDto {

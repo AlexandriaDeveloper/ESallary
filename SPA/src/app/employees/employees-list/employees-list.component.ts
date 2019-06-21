@@ -22,15 +22,6 @@ import {
 } from '@nicky-lenaers/ngx-scroll-to';
 
 import {
-  transition,
-  trigger,
-  style,
-  animate,
-  query,
-  stagger,
-  keyframes
-} from '@angular/animations';
-import {
   map,
   debounceTime,
   distinctUntilChanged,
@@ -101,13 +92,13 @@ export class EmployeesListComponent
     this.ctrlSubscripton = fromEvent(ctrl, 'keyup')
       .pipe(
         pluck('target', 'value'),
-        debounceTime(900),
+        debounceTime(600),
         distinctUntilChanged(),
         map(x => {
           this.loadUsers();
         })
       )
-      .subscribe();
+      .subscribe(x => {}, err => {}, () => this.ctrlSubscripton.unsubscribe());
   }
   constructor(
     private employeeService: EmployeeService,
@@ -166,8 +157,6 @@ export class EmployeesListComponent
         next: function(res) {},
         error: function(err) {},
         complete: function() {
-          console.log('completed');
-
           if (this.empSubscripton != null) {
             this.empSubscripton.unsubscribe();
           }

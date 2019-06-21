@@ -11,6 +11,8 @@ namespace API.Data.Interface {
         void Add (T entity);
         void AddRange (List<T> entity);
         void Delete (T entity);
+
+          void DeleteRange (List<T> entity) ;
         void Update (T entity);
         void UpdateRange (List<T> entities);
         Task<bool> SaveAll ();

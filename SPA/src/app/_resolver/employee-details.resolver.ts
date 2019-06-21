@@ -22,11 +22,12 @@ export class EmployeeDetailsResolver
   title = '';
   departments: DepartmentModel[];
   resolve(route: ActivatedRouteSnapshot): Observable<EmployeeDetailsModel> {
-    const id = route.params['id'];
+    console.log(route.params);
+    const nationalId = route.params['nationalId'];
     this.title = route.data['titel'];
 
     return this.empService
-      .getEmpDetails(id)
+      .getEmpDetails(nationalId)
       .pipe();
   }
 }

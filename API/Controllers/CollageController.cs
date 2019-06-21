@@ -16,13 +16,7 @@ namespace API.Controllers {
             _uow = uow;
             _mapper = mapper;
         }
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            //TODO: Implement Realistic Implementation
-        
-            return Ok();
-        }
+ 
 
     }
 }

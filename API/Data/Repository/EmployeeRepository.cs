@@ -48,8 +48,7 @@ namespace API.Data.Repository {
         }
         public async Task<EmployeeFinincialData> GetEmployeeFinance (int id) {
 
-            return await _context.EmployeeFinincialData.FindAsync(id);
-             
+            return await _context.EmployeeFinincialData.FindAsync (id);
 
         }
         public async Task<List<Employee>> AddEmployeesFileAsync (EmployeesFileDto empData) {
@@ -84,12 +83,12 @@ namespace API.Data.Repository {
                     .SingleOrDefault (x => x.NationalId == empNationalId);
 
                 if (emp == null) {
-                    var tempEmp = await InserEmployeeData (row, dep);
+                    var tempEmp =  InserEmployeeData (row, dep);
                     _context.Employees.Add (tempEmp);
                     propertyChanged = true;
                 } else {
                     emp = _context.Employees.SingleOrDefault (x => x.Id == emp.Id);
-                    if (await UpdateEmployeeData (emp, row) != null) {
+                    if ( UpdateEmployeeData (emp, row) != null) {
 
                         propertyChanged = true;
                     }
@@ -106,14 +105,26 @@ namespace API.Data.Repository {
             return emps;
 
         }
-        private async Task<Employee> InserEmployeeData (DataRow row, Department dep) {
+        public async Task<IEnumerable<Employee>> SuggestEmployeeByName (string name, string paymentType, bool all) {
+            string[] SplitedName = name.Split (" ");
+            IEnumerable<Employee> emps;
+            if (!all) {
+                emps =await  _context.Employees
+                    .Where (x => SplitedName.All (s => x.KnownAs.Contains (s)) && x.KnownAs.StartsWith (SplitedName[0]) && x.Deleted == false).ToListAsync();
+            } else {
+                emps =await  _context.Employees
+                    .Where (x => SplitedName.Any (s => x.KnownAs.Contains (s)) && x.KnownAs.StartsWith (SplitedName[0]) && x.Deleted == false).ToListAsync();
+            }
+            return emps;
+        }
+        private Employee InserEmployeeData (DataRow row, Department dep) {
             //
             string payment = row.ItemArray[1].ToString ();
             var emp = new Employee () {
                 Name = row.ItemArray[5].ToString (),
-                KnownAs = row.ItemArray[5].ToString ().ToNormalizedString(),
-                SallaryOption = PaymentTypeConst.ATM,
-                OtherOption = PaymentTypeConst.ATM,
+                KnownAs = row.ItemArray[5].ToString ().ToNormalizedString (),
+                ATMOption = PaymentTypeConst.ATM,
+                BankOption = PaymentTypeConst.ATM,
                 NationalId = row.ItemArray[0].ToString (),
                 Grade = row.ItemArray[3].ToString (),
                 DepartmentId = dep.Id,
@@ -131,7 +142,7 @@ namespace API.Data.Repository {
 
                 emp.HasBank = true;
                 emp.EmployeeBank = new EmployeeBank ();
-                emp.SallaryOption = PaymentTypeConst.Bank;
+                emp.BankOption = PaymentTypeConst.Bank;
                 emp.EmployeeBank.BankCode = row.ItemArray[6].ToString ();
                 emp.EmployeeBank.BankName = row.ItemArray[7].ToString ();
                 emp.EmployeeBank.BranchCode = row.ItemArray[8].ToString ();
@@ -141,20 +152,20 @@ namespace API.Data.Repository {
 
             return emp;
         }
-        private async Task<Employee> UpdateEmployeeData (Employee emp, DataRow row) {
+        private Employee UpdateEmployeeData (Employee emp, DataRow row) {
             string payment = row.ItemArray[1].ToString ();
             bool propertyChanged = false;
-            bool update = true;
-            if (payment == "2-اخرى بطاقات حكومية") {     
-                if ( string.IsNullOrEmpty( emp.SallaryOption)) {
-                    emp.SallaryOption = PaymentTypeConst.ATM;
+         
+            if (payment == "2-اخرى بطاقات حكومية") {
+                if (string.IsNullOrEmpty (emp.ATMOption)) {
+                    emp.ATMOption = PaymentTypeConst.ATM;                 
                     propertyChanged = true;
                 }
-                   if ( string.IsNullOrEmpty( emp.OtherOption)) {
-                    emp.OtherOption = PaymentTypeConst.ATM;
+                if (string.IsNullOrEmpty (emp.ATMOption)) {
+                    emp.ATMOption = PaymentTypeConst.ATM;                
                     propertyChanged = true;
                 }
-                if (emp.HasATM == false) { emp.HasATM = true; }
+                if (emp.HasATM == false) { emp.HasATM = true; propertyChanged = true; }
             } else if (payment == "3-مرتب تحويلات بنكية") {
                 if (emp.EmployeeBank == null) {
                     emp.EmployeeBank = new EmployeeBank ();
@@ -175,12 +186,12 @@ namespace API.Data.Repository {
                     emp.EmployeeBank.BranchName = row.ItemArray[9].ToString ();
                     propertyChanged = true;
                 }
-                if (emp.SallaryOption == PaymentTypeConst.ATM || string.IsNullOrEmpty( emp.SallaryOption)) {
-                    emp.SallaryOption = PaymentTypeConst.Bank;
+                if (emp.BankOption == PaymentTypeConst.ATM || string.IsNullOrEmpty (emp.BankOption)) {
+                    emp.BankOption = PaymentTypeConst.Bank;
                     propertyChanged = true;
                 }
 
-                if (emp.HasBank == false) { emp.HasBank = true; }
+                if (emp.HasBank == false) { emp.HasBank = true; propertyChanged = true; }
             }
             if (emp.Name != row.ItemArray[5].ToString ()) {
                 emp.Name = row.ItemArray[5].ToString ();
@@ -219,12 +230,15 @@ namespace API.Data.Repository {
                 return emp;
             return null;
         }
-        public async Task<List<Employee>> FiltetByDepartment (string filterBy, List<Employee> emps) {
-            var result = emps.Where (x => x.Department.Name.Contains (filterBy)).ToList ();
+        public  List<Employee> FiltetByDepartment (string filterBy, List<Employee> emps) {
+            var result = emps.Where (x => x.Department.Name.Contains (filterBy));
 
             return result.ToList ();
         }
 
-        
+        Task<List<Employee>> IEmployeeRepository.FiltetByDepartment(string filterBy, List<Employee> emps)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

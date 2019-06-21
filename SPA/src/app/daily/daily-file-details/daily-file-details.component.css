@@ -15,3 +15,26 @@ html,
 body {
   height: 100%;
 }
+
+
+.suggested{
+
+  color: #80a74d
+}
+.table-suggest{
+  transition: 1s ease-in;
+}
+.isnew{
+
+  color: white;
+}
+
+.issaved{
+  color: #acb2a2
+}
+.isedited{
+  color: yellow
+}
+.isdeleted{
+  display: none;
+}

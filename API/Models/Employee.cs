@@ -9,16 +9,17 @@ namespace API.Models {
     public class Employee {
         [Key]
         public int Id { get; set; }
+
         [MaxLength (14)]
         [Required]
         public string NationalId { get; set; }
 
-        [StringLength (150)]       
-         [Required]
+        [StringLength (150)]
+        [Required]
         public string Name { get; set; }
 
-        [StringLength (150)]      
-          [Required]
+        [StringLength (150)]
+        [Required]
         public string KnownAs { get; set; }
 
         [StringLength (11)]
@@ -56,10 +57,10 @@ namespace API.Models {
         public bool HasPost { get; set; } = false;
 
         [StringLength (150)]
-        public string SallaryOption { get; set; }
+        public string ATMOption { get; set; }
 
         [StringLength (150)]
-        public string OtherOption { get; set; }
+        public string BankOption { get; set; }
 
         public bool Deleted { get; set; }
         public virtual ICollection<EmployeeFinincialData> EmployeeFinincialData { get; set; }
@@ -67,7 +68,7 @@ namespace API.Models {
         public virtual ICollection<EmployeeDeductions> EmployeeDeductions { get; set; }
         public virtual ICollection<EmployeeDeductionsPaied> EmployeeDeductionsPaied { get; set; }
         public virtual ICollection<EmployeePartTime> EmployeePartTime { get; set; }
-             public Employee () {
+        public Employee () {
             // if (EmployeeBank == null) {
             //     EmployeeBank = new EmployeeBank ();
             // }

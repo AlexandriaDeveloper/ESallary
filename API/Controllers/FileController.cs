@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Interface;
+using API.DTOS;
 using API.Helper;
 using API.Models;
 using API.Service;
@@ -27,15 +28,24 @@ namespace API.Controllers {
       this._mapper = mapper;
     }
 
-    public async Task<IActionResult> Get () {
-      return Content ("hello world");
-    }
+  private async Task<FileDTO> LoadFileDetails(int id ){
+    var result = _uow.FileRepository.Get (x => x.Id == id, "FileDetails.Employee.Department").FirstOrDefault ();
+      var resultToReturn = _mapper.Map<FileDTO> (result);
+
+      foreach (var emp in resultToReturn.FileDetails)
+      {
+       
+        var empdata =await _uow.EmployeeRepository.Get(emp.EmployeeData.Id);
+       //   emp.PaymentMethod=await EmployeePaymentOptions( empdata);
+          emp.State=FileState.Saved.ToString ();
+      }
+      return resultToReturn;
+  }
 
     [HttpGet ("{id}")]
     public async Task<IActionResult> Get (int id) {
-      var result = _uow.FileRepository.Get (x => x.Id == id, "FileDetails").FirstOrDefault ();
-      var resultToReturn = _mapper.Map<FileDTO> (result);
-      return Ok (resultToReturn);
+
+      return Ok (  await LoadFileDetails(id));
     }
 
     [HttpPost ()]
@@ -74,7 +84,7 @@ namespace API.Controllers {
         await file.CopyToAsync (stream);
       }
 
-      //read Table 
+      //read Table
       var npoiHelper = new NPOIHelper (filePath);
       var sheetsName = npoiHelper.GetFileSheets ();
       return Ok (new { sheets = sheetsName, path = filePath, fileData = file });
@@ -90,7 +100,7 @@ namespace API.Controllers {
       foreach (var sheet in Model.Sheets) {
 
         var sheetData = npoiHelper.ReadSheet (sheet);
-        //start Read Header 
+        //start Read Header
         var headerIndex = npoiHelper.GetFirstRowIndex (sheet);
 
         sheetData = sheetData.ReplaceCoulmnName (SheetHeader.Names, "Name");
@@ -103,29 +113,68 @@ namespace API.Controllers {
         foreach (DataRow Row in data.Rows) {
           string EmpName = Row.ItemArray.GetValue (Row.Table.Columns.IndexOf ("Name")).ToString ();
           string code = Row.ItemArray.GetValue (Row.Table.Columns.IndexOf ("Code")).ToString ();
-          var emp = await _uow.EmployeeRepository.Get (x => x.Code == code);
-          string Net = Row.ItemArray.GetValue (Row.Table.Columns.IndexOf ("Net")).ToString ();
+          IEnumerable<Employee> emp;
 
+          emp = await _uow.EmployeeRepository.Get (x => x.Code == code);
+
+          string Net = Row.ItemArray.GetValue (Row.Table.Columns.IndexOf ("Net")).ToString ();
+          var firstName = emp.FirstOrDefault ().KnownAs.Normalize ().ToNormalizedString ().Split (" ");
+          var firstRowName = EmpName.Normalize ().ToNormalizedString ().Split (" ");
           if (!string.IsNullOrEmpty (EmpName) &&
             !string.IsNullOrWhiteSpace (EmpName)) {
             if (!string.IsNullOrEmpty (code) ||
               !string.IsNullOrWhiteSpace (code)) {
-
+              string defaultPaymentMethod = "";
+              if (Model.PaymentType == PaymentTypeConst.ATM) {
+                defaultPaymentMethod = emp.FirstOrDefault ().ATMOption;
+              } else if (Model.PaymentType == PaymentTypeConst.Bank) {
+                defaultPaymentMethod = emp.FirstOrDefault ().BankOption;
+              }
+          var FileDetailDto= new FileDetailsDto();
+       
               dt.Add (new FileDetailsDto () {
-                EmployeeName = emp.FirstOrDefault ().KnownAs,
-                  Id = emp.FirstOrDefault ().Id,
-                  Code = code.ToString (),
-                  Net = decimal.Parse (Net)
+
+                 EmployeeData=new DTOS.EmployeeDataListToReturnDto(){
+
+                   Name= emp.FirstOrDefault ().KnownAs,
+                   Position = emp.FirstOrDefault ().Grade,
+                   Id=emp.FirstOrDefault().Id,
+                   Collage = emp.FirstOrDefault ().Collage,
+                  Code = emp.FirstOrDefault ().Code .ToString (),
+                 
+                  HasATM=emp.FirstOrDefault().HasATM,  
+                  HasBank=emp.FirstOrDefault().HasBank,                  
+                  HasOrder=emp.FirstOrDefault().HasOrder,                  
+                  HasPost=emp.FirstOrDefault().HasPost, 
+                  ATMOption=emp.FirstOrDefault().ATMOption,
+                  BankOption=emp.FirstOrDefault().BankOption
+                  
+                  }    
+                 ,
+
+                  
+                
+                  Net = decimal.Parse (Net),
+                
+                
+                  SelectedPaymentMethod = defaultPaymentMethod,
+                  //PaymentMethod= EmployeePaymentOptions(emp.FirstOrDefault()),
+                  State = FileState.New.ToString (),
+                                            
+                  Warrning = (firstName[0] == firstRowName[0] && firstName[1] == firstRowName[1]) ? null : string.Format (" تأكد من الأسم من فضلك - {0}", EmpName)
 
               });
 
             } else {
 
-              var s = await SuggestEmployee (EmpName.ToNormalizedString (), Model.PaymentType);
+              var s = await SuggestEmployee (EmpName.ToNormalizedString (), Model.PaymentType, false);
               dt.Add (new FileDetailsDto () {
 
-                EmployeeName = EmpName,
+                EmployeeData =new EmployeeDataListToReturnDto(){
+                  Name= EmpName
+                  },
                   Net = decimal.Parse (Net),
+                  State = FileState.New.ToString (),
                   SuggestedEmployee = s
               });
             }
@@ -139,7 +188,42 @@ namespace API.Controllers {
 
     }
 
-    private async Task<List<SuggestionsFileDetailsDto>> SuggestEmployee (string name, string paymentType) {
+    [HttpPost ("SaveSheetData")]
+    public async Task<IActionResult> SaveSheetData (List<FileDetailsDto> data) {
+     // List<FileDetailsDto> dataToReturn = new List<FileDetailsDto> ();
+      List<FileDetail> dataToDb = new List<FileDetail> ();
+      foreach (var item in data) {
+        if (item.SuggestedEmployee != null) {
+       //   return BadRequest ("من فضلك قم بأختيار من المقتراحات للموظف " + item.EmployeeName);
+        } else {
+          if(item.State != FileState.Saved.ToString())
+       {    
+      
+          var saveData =_mapper.Map<FileDetail>(item);
+         
+          dataToDb.Add(saveData);
+          _uow.FileDetailRepository.Add(saveData);
+          await _uow.SaveChangesAsync();
+          item.State = FileState.Saved.ToString ();
+
+        }
+        
+
+      }
+      }
+      // _uow.FileDetailRepository.AddRange(dataToDb);
+      // await _uow.SaveChangesAsync();
+     var dataToReturn =await LoadFileDetails(data.FirstOrDefault().FileId);
+      return Ok (dataToReturn.FileDetails);
+    }
+
+    [HttpGet ("SuggestAllEmployee")]
+    public async Task<List<SuggestionsFileDetailsDto>> SuggestAllEmployee (string name, string paymentType) {
+
+      return await SuggestEmployee (name, paymentType, true);
+    }
+
+    private async Task<List<SuggestionsFileDetailsDto>> SuggestEmployee (string name, string paymentType, bool all) {
 
       string[] SplitedName = name.Split (" ");
 
@@ -147,40 +231,67 @@ namespace API.Controllers {
       if (string.IsNullOrEmpty (name)) { return Suggestions; }
       Suggestions.Add (new SuggestionsFileDetailsDto () {
         Name = name,
-          DefaultPaymentMethod = PaymentTypeConst.InternalPost,
+          SelectedPaymentMethod = PaymentTypeConst.InternalPost,
 
       });
       Suggestions[0].PaymentMethod.Add (PaymentTypeConst.InternalPost);
-      var emps = await _uow.EmployeeRepository
-        .Get (x => SplitedName.All (s => x.KnownAs.Contains (s)) && x.KnownAs.StartsWith (SplitedName[0]) && x.Deleted == false);
-      foreach (var emp in emps) {
-        var suggestedEmp = new SuggestionsFileDetailsDto () {
+      IEnumerable<Employee> emps;
+      emps = await _uow.EmployeeRepository.SuggestEmployeeByName (name, paymentType, all);
 
-          Id = emp.Id,
-          Code = emp.Code,
-          Name = emp.KnownAs,
-          Position = emp.Section,
-          Collage = emp.Collage,
-          DefaultPaymentMethod = emp.OtherOption
-        };
-    
-        if (emp.HasATM) {
-          suggestedEmp.PaymentMethod.Add (PaymentTypeConst.ATM);
+      foreach (var emp in emps) {
+        var suggestedEmp = _mapper.Map<SuggestionsFileDetailsDto> (emp);
+
+        if (paymentType == PaymentTypeConst.ATM) {
+          suggestedEmp.SelectedPaymentMethod = emp.ATMOption;
         }
-        if (emp.HasBank) {
-          suggestedEmp.PaymentMethod.Add (PaymentTypeConst.Bank);
+        if (paymentType == PaymentTypeConst.Bank) {
+          suggestedEmp.SelectedPaymentMethod = emp.BankOption;
         }
-        if (emp.HasPost) {
-          suggestedEmp.PaymentMethod.Add (PaymentTypeConst.PersonalPost);
-        }
-        if (emp.HasOrder) {
-          suggestedEmp.PaymentMethod.Add (PaymentTypeConst.PaymentOrder);
-        }
-        suggestedEmp.PaymentMethod.Add (PaymentTypeConst.InternalPost);
+       // suggestedEmp.PaymentMethod=await EmployeePaymentOptions(emp);
+       
         Suggestions.Add (suggestedEmp);
       }
       return Suggestions;
     }
 
+    // private async Task < List<string>> EmployeePaymentOptions(Employee emp){
+    //   List<string> empOptionList = new List<string>();
+
+    //   if (emp.HasATM) {
+    //       empOptionList.Add (PaymentTypeConst.ATM);
+    //     }
+    //     if (emp.HasBank) {
+    //       empOptionList.Add (PaymentTypeConst.Bank);
+    //     }
+    //     if (emp.HasPost) {
+    //       empOptionList.Add (PaymentTypeConst.PersonalPost);
+    //     }
+    //     if (emp.HasOrder) {
+    //       empOptionList.Add (PaymentTypeConst.PaymentOrder);
+    //     }  
+    //    empOptionList.Add (PaymentTypeConst.InternalPost);
+    //     return empOptionList;
+    // }
+  [HttpPost ("deleteData")]
+    public async Task<IActionResult> DeleteData (IEnumerable<FileDetailsDto> model) {
+   
+
+   foreach (var item in model)
+   {
+          var data =await _uow.FileDetailRepository.Get(item.Id);
+          if(data != null)
+          {
+           _uow.FileDetailRepository.Delete(data);  
+          }
+         
+        
+     
+  
+   }
+      await _uow.SaveChangesAsync();
+        return Ok(model);
+
+    }
   }
+
 }

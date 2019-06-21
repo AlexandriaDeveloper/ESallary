@@ -15,5 +15,6 @@ namespace API.Data.Interface {
         Task<List<Employee>> AddEmployeesFileAsync (EmployeesFileDto empData);
         Task<EmployeeFinincialData> GetEmployeeFinance (int id);
         Task<List<Employee>> FiltetByDepartment (string filterBy, List<Employee> emps);
+        Task<IEnumerable<Employee>> SuggestEmployeeByName(string name , string paymentType , bool all);
     }
 }

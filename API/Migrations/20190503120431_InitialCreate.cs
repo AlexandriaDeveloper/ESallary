@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatingApp.API.Migrations
 {
-    public partial class Intial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -273,8 +273,8 @@ namespace DatingApp.API.Migrations
                     HasBank = table.Column<bool>(nullable: false),
                     HasOrder = table.Column<bool>(nullable: false),
                     HasPost = table.Column<bool>(nullable: false),
-                    SallaryOption = table.Column<string>(maxLength: 150, nullable: true),
-                    OtherOption = table.Column<string>(maxLength: 150, nullable: true),
+                    ATMOption = table.Column<string>(maxLength: 150, nullable: true),
+                    BankOption = table.Column<string>(maxLength: 150, nullable: true),
                     Deleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>

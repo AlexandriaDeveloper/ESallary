@@ -1,3 +1,5 @@
+import { EmpAddModalComponent } from './daily/daily-file-details/emp-add-modal/emp-add-modal.component';
+import { SumPipe } from './_pipe/sum.pipe';
 import { FileSheetsModalComponent } from './daily/daily-file-details/file-sheets-modal/file-sheets-modal.component';
 import { PreventFileUnsavedChangedService } from './_guard/PreventFileUnsavedChanged.service';
 import { DailyFileDetailsComponent } from './daily/daily-file-details/daily-file-details.component';
@@ -14,6 +16,7 @@ import { DailyFileComponent } from './daily/daily-file/daily-file.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ComponentsModule } from './components.module';
 import { AuthGuardService } from './_guard/AuthGuard.service';
+import { SearchPipe } from './_pipe/search.pipe';
 
 const dailyRoutes: Routes = [
   {
@@ -29,7 +32,10 @@ const dailyRoutes: Routes = [
     DailyFileComponent,
     FiletypeModalComponent,
     DailyFileDetailsComponent,
-    FileSheetsModalComponent
+    FileSheetsModalComponent,
+    EmpAddModalComponent,
+    SumPipe,
+   SearchPipe
   ],
   imports: [
     CommonModule,
@@ -41,7 +47,11 @@ const dailyRoutes: Routes = [
     ReactiveFormsModule,
     ComponentsModule
   ],
-  entryComponents: [FiletypeModalComponent, FileSheetsModalComponent],
+  entryComponents: [
+    FiletypeModalComponent,
+    FileSheetsModalComponent,
+    EmpAddModalComponent
+  ],
 
   providers: [PreventFileUnsavedChangedService],
   exports: [RouterModule]

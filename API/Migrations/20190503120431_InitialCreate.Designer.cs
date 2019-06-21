@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190426182954_Intial")]
-    partial class Intial
+    [Migration("20190503120431_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,6 +117,12 @@ namespace DatingApp.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ATMOption")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("BankOption")
+                        .HasMaxLength(150);
+
                     b.Property<string>("Code")
                         .HasMaxLength(10);
 
@@ -158,14 +164,8 @@ namespace DatingApp.API.Migrations
                         .IsRequired()
                         .HasMaxLength(14);
 
-                    b.Property<string>("OtherOption")
-                        .HasMaxLength(150);
-
                     b.Property<string>("Phone")
                         .HasMaxLength(11);
-
-                    b.Property<string>("SallaryOption")
-                        .HasMaxLength(150);
 
                     b.Property<string>("Section")
                         .HasMaxLength(150);

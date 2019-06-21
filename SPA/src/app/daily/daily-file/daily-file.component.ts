@@ -54,7 +54,7 @@ export class DailyFileComponent implements OnInit {
   URL = environment.apiUrl + 'File/UploadFile';
   ngOnInit() {
     this.paymetMethod = this.sharedService.paymetMethod();
-    this.paymetType = this.sharedService.paymetType();
+    this.paymetType = this.sharedService.paymentType();
     this.collagesName = this.sharedService.collageName();
     this.filesTypeService
       .getAllFilesType()
