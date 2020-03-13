@@ -58,13 +58,13 @@ export class EmployeesListComponent
   ];
   empParams: EmpParams = new EmpParams();
   inputSubject: Subject<string> = new Subject<string>();
-  @ViewChild('name') nameInputRef: ElementRef;
-  @ViewChild('id') idInputRef: ElementRef;
-  @ViewChild('department') departmentInputRef: ElementRef;
-  @ViewChild('collage') collageInputRef: ElementRef;
-  @ViewChild('code') codeInputRef: ElementRef;
-  @ViewChild('grade') gradeInputRef: ElementRef;
-  @ViewChild('payment') paymentInputRef: ElementRef;
+  @ViewChild('name',{static : false}) nameInputRef: ElementRef;
+  @ViewChild('id',{static : false}) idInputRef: ElementRef;
+  @ViewChild('department',{static : false}) departmentInputRef: ElementRef;
+  @ViewChild('collage',{static : false}) collageInputRef: ElementRef;
+  @ViewChild('code',{static : false}) codeInputRef: ElementRef;
+  @ViewChild('grade',{static : false}) gradeInputRef: ElementRef;
+  @ViewChild('payment',{static : false}) paymentInputRef: ElementRef;
 
   el = this.nameInputRef;
   config: ScrollToConfigOptions = {
@@ -131,7 +131,8 @@ export class EmployeesListComponent
     return new Array(i);
   }
   pageChanged(event: any): void {
-    this.pagination.currentPage = event.page;
+
+    this.pagination.CurrentPage = event.page;
     //  window.scrollTo(0, 0);
     this._scrollToService.scrollTo(this.config);
     // this.loadUsers();
@@ -142,7 +143,7 @@ export class EmployeesListComponent
     this.data = [];
     this.empSubscripton = this.employeeService
       .getEmps(
-        this.pagination.currentPage,
+        this.pagination.CurrentPage,
         this.pagination.ItemsPerPage,
         this.empParams
       )

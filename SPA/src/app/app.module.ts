@@ -28,12 +28,10 @@ import { AccountService } from './_services/account.service';
 import { HomePageComponent } from './layout/homePage/homePage.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { JwtModule } from '@auth0/angular-jwt';
-import { FiletypeService } from './_services/filetype.service';
-import { ClickOutsideDirective } from './_directives/clickOutside.directive';
-import { NullDefaultValueDirective } from './_directives/nullDefaultValue.directive';
-import { OnlyNumberDirective } from './_directives/onlyNumber.directive';
+
 import { ComponentsModule } from './components.module';
+import { DeleteDialogComponent } from './_components/delete-dialog/delete-dialog.component';
+import { DailyService } from './_services/daily.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -48,6 +46,7 @@ export function tokenGetter() {
     NavbarComponent,
     LoginComponent,
     HomePageComponent,
+    DeleteDialogComponent,
 
 
   ],
@@ -76,11 +75,11 @@ export function tokenGetter() {
     EmployeeService,
 
     DepartmentService,
-    BankService,
+    BankService,DailyService
 
   ],
   bootstrap: [AppComponent],
   exports: [SharedModule],
-  entryComponents: []
+  entryComponents: [DeleteDialogComponent]
 })
 export class AppModule {}

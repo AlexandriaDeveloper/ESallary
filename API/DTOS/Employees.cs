@@ -17,7 +17,7 @@ namespace API.DTOS {
 
     public class EmployeeDataListToReturnDto {
 
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string NationalId { get; set; }
         public string Name { get; set; }
         public string Collage { get; set; }
@@ -144,7 +144,9 @@ namespace API.DTOS {
         public IEnumerable<GradeDto> GradeList { get; set; }
         // public List<EmployeeDepartmentDto> DepartmentList { get; set; }
         public EmployeDetailsToGetDto () {
-            this.Bank = new EmployeeBankDto ();
+            // this.Bank = new EmployeeBankDto ();
+            // this.Post= new EmployeePostDto(); 
+            // this.Order= new EmployeeOrderDto();
 
         }
 

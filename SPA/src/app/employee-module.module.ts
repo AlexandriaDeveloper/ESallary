@@ -1,4 +1,3 @@
-
 import { TestChildComponent } from './employees/test-parent/test-child/test-child.component';
 import { TestParentComponent } from './employees/test-parent/test-parent.component';
 import { ComponentsModule } from './components.module';
@@ -133,7 +132,6 @@ export const CustomSelectOptions: INgxSelectOptions = {
 };
 @NgModule({
   declarations: [
-
     EmployeesListComponent,
     EmployeeListRowComponent,
     EmployeeDetailsComponent,
@@ -152,14 +150,14 @@ export const CustomSelectOptions: INgxSelectOptions = {
     EmployeeRestoreComponent,
     EmployeeFinincialDataComponent,
     UploadComponent,
-    DeleteDialogComponent,
+
     RestoreDialogComponent,
     TestParentComponent,
     TestChildComponent
   ],
   imports: [
     CommonModule,
-   // SharedModule,
+    // SharedModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -181,7 +179,7 @@ export const CustomSelectOptions: INgxSelectOptions = {
     EmployeeDetalisAddOrderBankModalComponent,
     EmployeeDetailsAddOrderBranchModalComponent,
     EmployeeDetailsAddPostModalComponent,
-    DeleteDialogComponent,
+
     RestoreDialogComponent,
     TestChildComponent
   ]

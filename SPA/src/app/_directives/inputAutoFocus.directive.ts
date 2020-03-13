@@ -2,7 +2,7 @@ import {
   Directive,
   ElementRef,
   Renderer2,
-  ViewChild,
+
   AfterViewInit,
   OnDestroy
 } from '@angular/core';
@@ -46,4 +46,5 @@ export class InputAutoFocusDirective implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.btnSubcribe.unsubscribe();
   }
+  
 }

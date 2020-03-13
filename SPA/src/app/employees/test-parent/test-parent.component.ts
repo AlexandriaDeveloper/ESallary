@@ -16,7 +16,7 @@ import {
   styleUrls: ['./test-parent.component.css']
 })
 export class TestParentComponent implements OnInit, AfterContentInit {
-  @ViewChild('entry', { read: ViewContainerRef }) entry: ViewContainerRef;
+  @ViewChild('entry' ,{static : false}) entry: ViewContainerRef;
   component: ComponentRef<TestChildComponent>;
   data = '';
   counter = 1;

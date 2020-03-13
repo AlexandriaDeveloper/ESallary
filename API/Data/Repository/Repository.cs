@@ -27,13 +27,13 @@ namespace API.Data.Repository {
             await _dbSet.AddRangeAsync (entity);
         }
         public void Delete (T entity) {
-             
+
             if (_context.Entry (entity).State == EntityState.Detached) {
                 _context.Attach (entity);
             }
             _dbSet.Remove (entity);
         }
-            public void DeleteRange (List<T> entity) {
+        public void DeleteRange (List<T> entity) {
             if (_context.Entry (entity).State == EntityState.Detached) {
                 _context.Attach (entity);
             }
@@ -61,7 +61,7 @@ namespace API.Data.Repository {
             return _dbSet.FindAsync (id);
         }
 
-        public virtual async Task<IQueryable<T>> Get (EmpsParams empsParams, string includes,
+        public virtual async Task<IQueryable<T>> Get ( string includes,
             Func<IQueryable<T>, IOrderedQueryable<T>> predict = null, Expression<Func<T, bool>> filter = null) {
             IQueryable<T> query;
             // query = _dbSet;
@@ -100,6 +100,7 @@ namespace API.Data.Repository {
             }
             return query;
         }
+      
         public virtual async Task<IEnumerable<T>> Get (Expression<Func<T, bool>> query) {
             return await _dbSet.Where (query).AsNoTracking ().ToListAsync ();
         }

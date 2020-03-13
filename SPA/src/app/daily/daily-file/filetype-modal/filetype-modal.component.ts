@@ -2,7 +2,7 @@ import { CustomToastrService } from './../../../_services/toastr.service';
 import { FiletypeService } from './../../../_services/filetype.service';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { forEach } from '@angular/router/src/utils/collection';
+
 import { Subject } from 'rxjs';
 
 @Component({

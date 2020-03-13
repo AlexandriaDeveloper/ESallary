@@ -23,7 +23,7 @@ export class EmployeeDetailsAddPostModalComponent
   addPostForm: FormGroup;
   postList = ['البنك الاهلى', 'البريد المصرى'];
   public onClose = new Subject<any>();
-  @ViewChild('postTo') public ngSelect: NgxSelectComponent;
+  @ViewChild('postTo',{static : false}) public ngSelect: NgxSelectComponent;
   post: { postTo: string; postAddress: string; postPhone: string };
   constructor(
     public modalRef: BsModalRef,

@@ -20,8 +20,9 @@ namespace API.Data.Interface {
         Task<T> Get (int id);
         IQueryable<T> Get (Expression<Func<T, bool>> filter = null, string includes = null);
         Task<T> Get (string id);
-        Task<IQueryable<T>> Get (EmpsParams empsParams, string includes,
-            Func<IQueryable<T>, IOrderedQueryable<T>> predict = null, Expression<Func<T, bool>> filter = null);
+        Task<IQueryable<T>> Get ( string includes,
+        Func<IQueryable<T>, IOrderedQueryable<T>> predict = null, Expression<Func<T, bool>> filter = null);
+
         Task<IEnumerable<T>> Get (Expression<Func<T, bool>> query);
     }
 }

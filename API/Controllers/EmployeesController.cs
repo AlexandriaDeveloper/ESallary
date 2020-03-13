@@ -37,11 +37,12 @@ namespace API.Controllers {
         }
 
         [HttpGet ("getAllEmployees")]
-        public async Task<IActionResult> GetAllEmployees ([FromQuery] EmpsParams param) {
+        public async Task<IActionResult> GetAllEmployees ([FromQuery] EmployeeParams<Employee> param) {
             string gender = "";
             string[] splitedName = param.Name.ToNormalizedString ().Split (" ");
             if (param.Male == true && param.Female == false) { gender = "Male"; } else if (param.Female == true && param.Male == false) { gender = "Female"; } else if (param.Female == false && param.Male == false) { gender = "None"; }
-            var emps = await _uow.EmployeeRepository.Get (param, "Department", x => x.OrderBy (t => t.Name), emp =>
+            var emps = await _uow.EmployeeRepository.Get ( "Department",
+             x => x.OrderBy (t => t.Name), emp =>
                 splitedName.All (p => emp.KnownAs.Contains (p)) &&
                 emp.KnownAs.StartsWith (splitedName[0]) &&
                 emp.NationalId.StartsWith (param.NationalId == null ? string.Empty : param.NationalId) &&
@@ -83,7 +84,7 @@ namespace API.Controllers {
         }
 
         [HttpGet ("getDeletedEmployees")]
-        public async Task<IActionResult> GetDeletedEmployees ([FromQuery] EmpsParams param) {
+        public async Task<IActionResult> GetDeletedEmployees ([FromQuery] EmployeeParams<Employee> param) {
             param.Deleted = true;
             var result =await GetAllEmployees (param);
             return Ok (result);
@@ -443,7 +444,7 @@ namespace API.Controllers {
         private  EmployeDetailsToGetDto GetEmployeePost (EmployeDetailsToGetDto empToReturn, Employee empFromDb) {
             if (empToReturn.HasPost) {
                 empToReturn.Post = new EmployeePostDto () {
-                    Id = empFromDb.EmployeeOrder.Id,
+                    Id = empFromDb.EmployeePost.Id,
                     PostTo = empFromDb.EmployeePost.PostTo,
                     PostAddress = empFromDb.EmployeePost.PostAddress,
                     PostPhone = empFromDb.EmployeePost.PostPhone

@@ -28,17 +28,17 @@ import { DeleteDialogComponent } from 'src/app/_components/delete-dialog/delete-
     <td class="">{{ item.grade }}</td>
     <td class="">{{ item.collage }}</td>
     <td class="">
-      <div *ngIf="item.gender == 'Male'">ذكر</div>
-      <div *ngIf="item.gender == 'Female'">أنثى</div>
+      <div *ngIf="item.gender === 'Male'">ذكر</div>
+      <div *ngIf="item.gender === 'Female'">أنثى</div>
     </td>
     <td class="">
-      <span *ngIf="item.employeePaymentType.hasATM === true"> بطاقه </span>
-      <span *ngIf="item.employeePaymentType.hasBank === true"> , بنك </span>
-      <span *ngIf="item.employeePaymentType.hasOrder === true">
+      <span *ngIf="item.hasATM === true"> بطاقه </span>
+      <span *ngIf="item.hasBank === true"> , بنك </span>
+      <span *ngIf="item.hasOrder === true">
         , أمر دفع
       </span>
 
-      <span *ngIf="item.employeePaymentType.hasPost === true"> , حواله </span>
+      <span *ngIf="item.hasPost === true"> , حواله </span>
     </td>
     <td class="">{{ item.code }}</td>
   `

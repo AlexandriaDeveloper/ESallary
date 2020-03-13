@@ -17,15 +17,35 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ComponentsModule } from './components.module';
 import { AuthGuardService } from './_guard/AuthGuard.service';
 import { SearchPipe } from './_pipe/search.pipe';
+import { DailyFileListComponent } from './daily/daily-file-list/daily-file-list.component';
+import { FileResolver } from './_resolver/file-list.resolver';
+import { EditFileComponent } from './daily/daily-file-list/edit-file/edit-file.component';
+
+import { SerachModelComponent } from './daily/daily-file-list/serach-model/serach-model.component';
+import { DailyListComponent } from './daily/daily-list/daily-list.component';
+import { DailyResolver } from './_resolver/daily-list.resolver';
+
 
 const dailyRoutes: Routes = [
   {
-    path: 'files',
+    path: 'files/new',
     component: DailyFileComponent,
     canActivate: [AuthGuardService],
     canDeactivate: [PreventFileUnsavedChangedService]
   },
-  { path: 'files/:id', component: DailyFileDetailsComponent }
+  { path: 'files/:id', component: DailyFileDetailsComponent },
+  { path: 'files/edit-file/:id', component: EditFileComponent },
+
+  {
+    path: 'files',
+    component: DailyFileListComponent,
+    resolve: { emps: FileResolver }
+  },
+  {
+    path: '',
+    component: DailyListComponent,
+    resolve: { emps: DailyResolver }
+  }
 ];
 @NgModule({
   declarations: [
@@ -35,7 +55,14 @@ const dailyRoutes: Routes = [
     FileSheetsModalComponent,
     EmpAddModalComponent,
     SumPipe,
-   SearchPipe
+    SearchPipe,
+    DailyFileListComponent,
+
+    EditFileComponent,
+
+    SerachModelComponent,
+
+    DailyListComponent
   ],
   imports: [
     CommonModule,
@@ -50,10 +77,11 @@ const dailyRoutes: Routes = [
   entryComponents: [
     FiletypeModalComponent,
     FileSheetsModalComponent,
-    EmpAddModalComponent
+    EmpAddModalComponent,
+    SerachModelComponent
   ],
 
-  providers: [PreventFileUnsavedChangedService],
+  providers: [PreventFileUnsavedChangedService, FileResolver, DailyResolver],
   exports: [RouterModule]
 })
 export class DailyModule {}

@@ -24,7 +24,7 @@ namespace API.Controllers {
 
         [HttpGet ("getBank")]
         public async Task<IActionResult> GetBank () {
-            var banks = await _uow.BankRepository.Get (null, "", x => x.OrderBy (b => b.BankName));
+            var banks = await _uow.BankRepository.Get ( "", x => x.OrderBy (b => b.BankName));
 
             var bankToReturn = _mapper.Map<IEnumerable<BankDto>> (banks);
             return Ok (bankToReturn);
@@ -32,7 +32,7 @@ namespace API.Controllers {
 
         [HttpGet ("getBankBranch/{id}")]
         public async Task<IActionResult> GetBankBranch (int id) {
-            var bankBranches = await _uow.BankBranchRepository.Get (null, "", x => x.OrderBy (b => b.BranchName), x => x.BankId == id);
+            var bankBranches = await _uow.BankBranchRepository.Get ( "", x => x.OrderBy (b => b.BranchName), x => x.BankId == id);
             return Ok (bankBranches);
         }
 

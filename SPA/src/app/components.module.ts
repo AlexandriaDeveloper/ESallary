@@ -16,6 +16,7 @@ import { BankService } from './_services/bank.service';
 import { ClickOutsideDirective } from './_directives/clickOutside.directive';
 import { NullDefaultValueDirective } from './_directives/nullDefaultValue.directive';
 import { OnlyNumberDirective } from './_directives/onlyNumber.directive';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 export const CustomSelectOptions: INgxSelectOptions = {
   // Check the interface for more options
@@ -47,7 +48,8 @@ export const ToastConfig = {
     CollapseModule.forRoot(),
     CarouselModule.forRoot(),
     ModalModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot(),
   ],
   declarations: [
     OnlyNumberDirective,
@@ -69,7 +71,8 @@ export const ToastConfig = {
     TooltipModule,
     OnlyNumberDirective,
     ClickOutsideDirective,
-    NullDefaultValueDirective
+    NullDefaultValueDirective,
+    BsDatepickerModule
   ]
 })
 export class ComponentsModule {}

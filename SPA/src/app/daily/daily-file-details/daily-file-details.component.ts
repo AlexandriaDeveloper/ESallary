@@ -11,20 +11,16 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { SharedService } from 'src/app/_services/shared.service';
 import { EmployeeSharedService } from 'src/app/_services/employee-shared.service';
 import { GridFlowAnimation } from 'src/app/_animations/grid-flow-animation';
-import {
-  animate,
-  transition,
-  trigger,
-  useAnimation
-} from '@angular/animations';
+
 import { _ } from 'underscore';
-import { bounce, fadeInDown, fadeIn, slideInDown } from 'ngx-animate';
-import { forEach } from '@angular/router/src/utils/collection';
+import { saveAs } from 'file-saver';
+import { url } from 'inspector';
+
 @Component({
   selector: 'app-daily-file-details',
   templateUrl: './daily-file-details.component.html',
   styleUrls: ['./daily-file-details.component.css'],
-  animations: GridFlowAnimation.animations,
+  animations: GridFlowAnimation.animations
   // animations: [
   //   trigger('bounce', [transition('* => *', useAnimation(slideInDown))])
   // ]
@@ -50,8 +46,8 @@ export class DailyFileDetailsComponent implements OnInit {
     ignoreBackdropClick: true
   };
   searchFilterData = {
-    employeeName: '',
-    employeeCode: '',
+    name: '',
+    code: '',
     paymentMethod: '',
     collage: '',
     department: '',
@@ -146,7 +142,7 @@ export class DailyFileDetailsComponent implements OnInit {
         element.state = 'new';
         element.paymentMethod = this.shared.getEmployeePaymentList(element);
         element.fileId = this.file.id;
-        console.log(element)
+        console.log(element);
         this.sheetData.data.push(element);
       });
       // this.sheetData.data +=  result.data;
@@ -166,9 +162,8 @@ export class DailyFileDetailsComponent implements OnInit {
       keyboard: true
     });
     this.modalRef.content.onClose.subscribe(result => {
-      console.log(result)
+      console.log(result);
       if (result.index === -1) {
-
         this.sheetData.data.push(result); // += element;
       } else {
         console.log(result);
@@ -204,12 +199,12 @@ export class DailyFileDetailsComponent implements OnInit {
 
     Object.assign(r.employeeData, s);
     Object.assign(r, s);
-    r.employeeData.id = s.employeeId
+    r.employeeData.id = s.employeeId;
     r.suggestedEmployee = null;
   }
   moreSuggestion(row) {
     this.fileService
-      .getAllSuggestedEmps(row.employeeName, this.file.paymentType)
+      .getAllSuggestedEmps(row.employeeData.name , this.file.paymentType)
       .subscribe(x => {
         row.suggestedEmployee = x.body;
       });
@@ -317,5 +312,70 @@ export class DailyFileDetailsComponent implements OnInit {
 
     this.calculateTotalSum();
     this.toast.showSuccess('تم حذف البيانات ');
+  }
+  downloadFile(fileType) {
+    let retuenData = [];
+    this.sheetData.data.forEach(x => {
+      if (
+        x.selectedPaymentMethod === this.sharedConst.getPaymentType(fileType)
+      ) {
+        retuenData.push(x);
+      }
+      // if (x.selectedPaymentMethod === this.sharedConst.getPaymentType('bank')) {
+      //   retuenData.push(x);
+      // }
+    });
+    this.fileService.downloadFile(this.file.id, fileType).subscribe(success => {
+      var r = saveAs(success, 'fileName.xls');
+
+      console.log(r);
+      console.log(success);
+    });
+    console.log(retuenData);
+  }
+
+  printFile(fileType) {
+    let retuenData = [];
+    this.sheetData.data.forEach(x => {
+      if (
+        x.selectedPaymentMethod === this.sharedConst.getPaymentType(fileType)
+      ) {
+        retuenData.push(x);
+      }
+    });
+    this.fileService
+      .printFile(this.file.id, fileType)
+      .subscribe((success: any) => {
+
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = './../../../assets/temp/PrintTemplate.xls';
+
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
+      });
+    console.log(retuenData);
+  }
+
+  /**
+   * Method is use to download file.
+   * @param data - Array Buffer data
+   * @param type - type of the document.
+   */
+  downLoadFile(data: any, type: string) {
+    console.log(data);
+    let blob = new Blob([data], { type: type });
+    let url = window.URL.createObjectURL(blob);
+    let pwa = window.open(url);
+
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    iframe.contentWindow.print();
+
+    if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
+      alert('Please disable your Pop-up blocker and try again.');
+    }
   }
 }

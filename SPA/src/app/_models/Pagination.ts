@@ -1,7 +1,7 @@
 /*CurrentPage":1,"ItemsPerPage":50,"TotalItems":6826,"TotalPages":137*/
 
 export interface Pagination {
-  currentPage: number;
+  CurrentPage: number;
   ItemsPerPage: number;
   TotalItems: number;
   totalPages: number;

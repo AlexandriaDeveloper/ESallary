@@ -1,5 +1,5 @@
 namespace API.Helper {
-    public class EmpsParams {
+    public class Params {
         private const int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;
         private int pageSize = 30;
@@ -7,6 +7,10 @@ namespace API.Helper {
             get { return pageSize; }
             set { pageSize = (value > MaxPageSize) ? MaxPageSize : value; }
         }
+
+    }
+
+    public class EmployeeParams<T> : Params {
         public int Id { get; set; }
         public string NationalId { get; set; } = "";
         public string Name { get; set; } = "";
@@ -23,6 +27,10 @@ namespace API.Helper {
         public bool HasBank { get; set; } = true;
         // public bool HasPost { get; set; } = true;
         public bool Deleted { get; set; } = false;
+    }
 
+    public class FileParams<T> : Params {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
     }
 }

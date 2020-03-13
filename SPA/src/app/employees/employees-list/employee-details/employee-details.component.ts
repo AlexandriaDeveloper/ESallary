@@ -40,7 +40,7 @@ import { DepartmentService } from 'src/app/_services/department.service';
   ]
 })
 export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
-  @ViewChild('f') editForm: FormControl;
+  @ViewChild('f',{static : false}) editForm: FormControl;
   public selectControl = new FormControl(1);
 
   modalRefAddBank: BsModalRef;

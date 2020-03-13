@@ -16,8 +16,8 @@ import {
 export class TestChildComponent implements OnInit, AfterContentInit {
   title = '';
   subject = '';
-  @ContentChild('insideNgContent') insideNgContent;
-  @ContentChild('printBtn') printBtn: ElementRef;
+  @ContentChild('insideNgContent', { static: false }) insideNgContent;
+  @ContentChild('printBtn', { static: false }) printBtn: ElementRef;
   @Output()
   print: EventEmitter<string> = new EventEmitter<string>();
   constructor() {}

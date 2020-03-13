@@ -13,8 +13,10 @@ namespace API.Models {
         [Column(TypeName = "decimal(9,2)")]
         public decimal? Total { get; set; }
         public string EntryNumber { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }=DateTime.Now;
+        public DateTime DailyDate { get; set; }
         public DateTime? MaturityDate { get; set; }
+        public bool Open { get; set; }=true;
 
         public Collection<File> Files { get; set; }
         public Daily()

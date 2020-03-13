@@ -11,8 +11,10 @@ import { EmployeeList } from '../_models/employee.model';
 export class EmpsListResolver implements Resolve<PaginatedResult<EmployeeList[]>> {
   pageNumber = 1;
   pageSize = 30;
-  constructor(private empService: EmployeeService, private router: Router) {}
+  constructor(private empService: EmployeeService) {}
   resolve(route: ActivatedRouteSnapshot): Observable<PaginatedResult<EmployeeList[]>> {
     return this.empService.getEmps(this.pageNumber, this.pageSize).pipe();
   }
 }
+
+

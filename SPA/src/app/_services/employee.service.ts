@@ -176,7 +176,7 @@ export class EmployeeService {
     );
   }
 
-  private initializeParams(param: any): HttpParams {
+  public initializeParams(param: any): HttpParams {
     let params = new HttpParams();
     const objProps = Object.getOwnPropertyNames(param);
     objProps.forEach(propId => {

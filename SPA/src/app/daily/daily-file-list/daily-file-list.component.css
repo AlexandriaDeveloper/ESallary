@@ -1,0 +1,14 @@
+.btn-file{
+  background-color: #9dac8a;
+
+}
+.btn-file > i{
+
+
+    color: rgb(255, 255, 255)
+
+}
+.btn-file :hover{
+  background-color: #444b3b;
+
+}

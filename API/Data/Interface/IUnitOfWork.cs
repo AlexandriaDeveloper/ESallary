@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using API.Data.Repository;
 
 namespace API.Data.Interface {
     public interface IUnitOfWork {

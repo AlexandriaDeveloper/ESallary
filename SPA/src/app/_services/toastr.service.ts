@@ -6,7 +6,7 @@ import { ToastrService, ToastContainerDirective } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class CustomToastrService implements OnInit {
-  @ViewChild(ToastContainerDirective) toastContainer: ToastContainerDirective;
+  @ViewChild(ToastContainerDirective, {static: false}) toastContainer: ToastContainerDirective;
   constructor(private toastrService: ToastrService) {}
   // confirm(message: string, okCallback: () => any) {
   //   this.toastrService.show()

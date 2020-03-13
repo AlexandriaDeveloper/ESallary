@@ -27,12 +27,13 @@ import { GridFlowAnimation } from 'src/app/_animations/grid-flow-animation';
 })
 export class EmployeeRestoreComponent
   implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-  @ViewChild('name') nameInputRef: ElementRef;
-  @ViewChild('id') idInputRef: ElementRef;
-  @ViewChild('collage') collageInputRef: ElementRef;
-  @ViewChild('code') codeInputRef: ElementRef;
-  @ViewChild('grade') gradeInputRef: ElementRef;
-  @ContentChild(EmployeeRestoreRowComponent) row: EmployeeRestoreRowComponent;
+  @ViewChild('name', { static: false }) nameInputRef: ElementRef;
+  @ViewChild('id', { static: false }) idInputRef: ElementRef;
+  @ViewChild('collage', { static: false }) collageInputRef: ElementRef;
+  @ViewChild('code', { static: false }) codeInputRef: ElementRef;
+  @ViewChild('grade', { static: false }) gradeInputRef: ElementRef;
+  @ContentChild(EmployeeRestoreRowComponent, { static: false })
+  row: EmployeeRestoreRowComponent;
   emps: any[];
   empParams: EmpParams = new EmpParams();
   pagination: Pagination;
@@ -80,7 +81,7 @@ export class EmployeeRestoreComponent
     this.empParams.deleted = true;
     this.employeeService
       .getDeletedEmps(
-        this.pagination.currentPage,
+        this.pagination.CurrentPage,
         this.pagination.ItemsPerPage,
         this.empParams
       )
@@ -113,7 +114,7 @@ export class EmployeeRestoreComponent
     return new Array(i);
   }
   pageChanged(event: any): void {
-    this.pagination.currentPage = event.page;
+    this.pagination.CurrentPage = event.page;
     this.loadEmps();
   }
 

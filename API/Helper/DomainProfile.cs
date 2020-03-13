@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,15 +10,15 @@ using AutoMapper;
 namespace API.Helper {
   public class DomainProfile : Profile {
     public DomainProfile () {
-     CreateMap<DepartmentDto, Department> ();
+      CreateMap<DepartmentDto, Department> ();
       CreateMap<Employee, EmployeeDataListToReturnDto> ()
-      .ForMember (x => x.HasATM, opt => opt.MapFrom (t => t.HasATM))
+        .ForMember (x => x.HasATM, opt => opt.MapFrom (t => t.HasATM))
         .ForMember (x => x.Name, opt => opt.MapFrom (t => t.KnownAs))
         .ForMember (x => x.Department, opt => opt.MapFrom (t => t.Department));
-      CreateMap<EmployeeDataListToReturnDto, Employee> ()        
+      CreateMap<EmployeeDataListToReturnDto, Employee> ()
 
         .ForMember (x => x.Name, opt => opt.MapFrom (t => t.Name.ToNormalizedString ()));
- 
+
       CreateMap<FileTypeDTO, FileType> ().ReverseMap ();
 
       CreateMap<SuggestionsFileDetailsDto, Employee> ()
@@ -26,41 +27,39 @@ namespace API.Helper {
         .ForMember (x => x.Grade, opt => opt.MapFrom (t => t.Position))
         .ReverseMap ();
 
-
-     CreateMap<Employee,EmployeeDataListToReturnDto>()
+      CreateMap<Employee, EmployeeDataListToReturnDto> ()
 
         .ForMember (x => x.Id, opt => opt.AllowNull ())
-        .ForMember (x => x.Name, opt => opt.MapFrom (t => t.KnownAs));       
+        .ForMember (x => x.Name, opt => opt.MapFrom (t => t.KnownAs));
 
-
-      CreateMap<FileDetail,FileDetailsDto > ()
+      CreateMap<FileDetail, FileDetailsDto> ()
         .ForMember (x => x.SelectedPaymentMethod, opt => opt.MapFrom (t => t.PaymentMethod))
-        .ForMember(x=> x.EmployeeData,opt => opt.MapFrom(t => t.Employee));
-     
-      CreateMap<FileDetailsDto,FileDetail > ()   
-        .ForMember(x=> x.EmployeeName,opt => opt.MapFrom(t => t.EmployeeData.Name))
-        .ForMember(x=> x.EmployeeId,opt => opt.MapFrom(t => t.EmployeeData.Id))
-        .ForMember(x=> x.Code,opt => opt.MapFrom(t => t.EmployeeData.Code))
+
+        .ForMember (x => x.EmployeeData, opt => opt.MapFrom (t => t.Employee));
+
+      CreateMap<FileDetailsDto, FileDetail> ()
+        .ForMember (x => x.EmployeeName, opt => opt.MapFrom (t => t.EmployeeData.Name))
+
+        .ForMember (t => t.EmployeeId, opt => opt.MapFrom (src => src.EmployeeData.Id))
+        .ForMember (x => x.Code, opt => opt.MapFrom (t => t.EmployeeData.Code))
         .ForMember (x => x.PaymentMethod, opt => opt.MapFrom (t => t.SelectedPaymentMethod));
-      CreateMap<FileDTO, File> ()
-        .ForMember (x => x.FileDetails, opt => opt.MapFrom (t => t.FileDetails))
-        
-        .ReverseMap ();
 
-      CreateMap<FileDetailsDto,Employee>()
+      // CreateMap<FileDTO, File> ()
+      //   .ForMember (x => x.FileDetails, opt => opt.MapFrom (t => t.FileDetails))
 
+      // .ReverseMap ();
 
-      .ForMember(x=> x.BankOption  ,opt => opt.MapFrom (t => t.SelectedPaymentMethod==  PaymentTypeConst.Bank))
-      .ForMember(x=> x.ATMOption  ,opt => opt.MapFrom (t => t.SelectedPaymentMethod== PaymentTypeConst.ATM))
-      ;
-      CreateMap<Employee,FileDetailsDto>()
-      .ForMember(x=> x.EmployeeData , opt => opt.MapFrom(t => t  ));
+      CreateMap<FileDetailsDto, Employee> ()
 
+        .ForMember (x => x.BankOption, opt => opt.MapFrom (t => t.SelectedPaymentMethod == PaymentTypeConst.Bank))
+        .ForMember (x => x.ATMOption, opt => opt.MapFrom (t => t.SelectedPaymentMethod == PaymentTypeConst.ATM));
+      CreateMap<Employee, FileDetailsDto> ()
+        .ForMember (x => x.EmployeeData, opt => opt.MapFrom (t => t));
 
       CreateMap<EmployeeAutoCompleteDto, Employee> ()
-      .ForMember (x => x.KnownAs, opt => opt.MapFrom (t => t.Name))
-      
-      .ReverseMap ();
+        .ForMember (x => x.KnownAs, opt => opt.MapFrom (t => t.Name))
+
+        .ReverseMap ();
       CreateMap<Employee, EmployeDetailsToGetDto> ()
         .ForMember (x => x.KnownAs, opt => opt.MapFrom (t => t.KnownAs))
         .ForMember (x => x.Bank, opt => opt.MapFrom (t => t.EmployeeBank))
@@ -69,7 +68,7 @@ namespace API.Helper {
       CreateMap<EmployeeAddItemDto, Employee> ()
         .ForMember (x => x.Section, opt => opt.MapFrom (t => t.Collage))
         .ForMember (x => x.Code, opt => opt.MapFrom (t => string.Empty))
-        .ForMember (x => x.KnownAs, opt => opt.MapFrom (t => t.Name.ToNormalizedString ().Trim()))
+        .ForMember (x => x.KnownAs, opt => opt.MapFrom (t => t.Name.ToNormalizedString ().Trim ()))
         .ForMember (x => x.DOB, opt => opt.ResolveUsing (t => t.NationalId.GetDOBFromNationalId ()))
         .ForMember (x => x.Gender, opt => opt.ResolveUsing (t => t.NationalId.CheckGenderByNationalId ()))
         .ForMember (x => x.HasATM, opt => opt.MapFrom (t => false))
@@ -94,6 +93,20 @@ namespace API.Helper {
         .ForMember (x => x.Branches, opt => opt.MapFrom (t => t.Branches))
         .ReverseMap ();
 
+      // CreateMap<FilesDTo, PagedList<Models.File>> ();
+
+      CreateMap<Models.File, FilesDTO> ()
+        .ForMember (x => x.ReservedDate, opt => opt.MapFrom (t => t.Daily.MaturityDate))
+        .ForMember (x => x.Open, opt => opt.MapFrom (t => t.Daily != null ? t.Daily.Open : true))
+        .ForMember (x => x.FileTypeName, opt => opt.MapFrom (t => t.FileType.Name))
+        .ForMember (x => x.FileDetails, opt => opt.MapFrom (t => t.FileDetails))
+      // .ReverseMap()
+      ;
+
+      CreateMap<FilesDTO, Models.File> ()
+        .ForMember (x => x.FileDetails, opt => opt.MapFrom (t => t.FileDetails));
+
+      CreateMap<DailyListToReturn, Models.Daily> ();
     }
 
   }

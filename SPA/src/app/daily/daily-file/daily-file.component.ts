@@ -36,7 +36,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class DailyFileComponent implements OnInit {
-  @ViewChild('fileForm') public fileForm: FormControl;
+  @ViewChild('fileForm',{static: false}) public fileForm: FormControl;
   file: any = {};
   paymetMethod: string[];
   collagesName: string[];
@@ -61,7 +61,7 @@ export class DailyFileComponent implements OnInit {
       .subscribe((x: any) => (this.filesType = x));
   }
   submitForm() {
-    console.log(this.filesType);
+    console.log(this.file);
     this.dailyService.getSheetsName(this.file).subscribe(
       (x: any) => {
         console.log(x);
@@ -96,4 +96,5 @@ export class DailyFileComponent implements OnInit {
     console.log(event);
     this.file.fileTypeId = event;
   }
+
 }

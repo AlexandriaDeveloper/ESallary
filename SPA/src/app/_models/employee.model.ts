@@ -38,7 +38,9 @@ export class EmployeeDetailsModel {
   nationalId: string;
   name: string;
   knownAs?: string;
+  gender?: string;
   phone: string;
+  code?: string;
   collage: string;
   section: string;
   departmentId?: number;
@@ -102,6 +104,7 @@ export class EmpParams {
   department = '';
   collage = '';
   section = '';
+  nationalId = '';
   code = '';
   grade = '';
   payment = '';

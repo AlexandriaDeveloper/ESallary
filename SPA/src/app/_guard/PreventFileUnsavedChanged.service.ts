@@ -11,9 +11,9 @@ export class PreventFileUnsavedChangedService
 
   canDeactivate(component: DailyFileComponent) {
 
-    if (component.fileForm.dirty && !component.fileForm.submitted) {
-      return confirm('هل انت متأكد ؟؟؟ البيانات لم يتم حفظها ');
-    }
-    return true;
+    // if (component.fileForm.dirty && !component.fileForm.submitted) {
+    //   return confirm('هل انت متأكد ؟؟؟ البيانات لم يتم حفظها ');
+    // }
+     return true;
   }
 }

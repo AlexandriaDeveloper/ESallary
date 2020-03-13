@@ -7,6 +7,8 @@
               أضف ملف
              <i class="fa fa-plus"></i>
             </button>
+
+
        </div>
       <div class="text-left" style="display: inline-block">      بيانات الملف {{ file.name }}</div>
 
@@ -25,26 +27,25 @@
           </div>
           <div class="row text-right">
               <div class="col-4"  *ngIf="order>0">
-              <a href="#"> <i class="fa fa-file"></i>  </a>
-              <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                <button (click)="downloadFile('order')" class="btn-primary btn-sm">  <i class="fa fa-cloud-download"></i>   </button>
                 اوامر دفع: {{ order }}</div>
               <div class="col-4"  *ngIf="bank>0">
-                  <a href="#"> <i class="fa fa-file"></i>  </a>
-                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                  <!-- <button href="#"> <i class="fa fa-file"></i>  </button> -->
+                  <button (click)="downloadFile('bank')" class="btn-primary btn-sm">  <i class="fa fa-cloud-download"></i>   </button>
                  تحويلات بنكيه: {{ bank }}</div>
               <div class="col-4"  *ngIf="atm>0">
-                  <a href="#"> <i class="fa fa-file"></i>  </a>
-                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                  <!-- <button (click)="printFile('atm')"> <i class="fa fa-file"></i>  </button> -->
+                  <button (click)="downloadFile('atm')" class="btn-primary btn-sm">  <i class="fa fa-cloud-download"></i>   </button>
                 بطاقات حكوميه: {{ atm }}</div>
             </div>
             <div class="row">
               <div class="col-4" *ngIf="personalpost>0">
-                <a href="#"> <i class="fa fa-file"></i>  </a>
-                <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                <!-- <a href="#"> <i class="fa fa-file"></i>  </a> -->
+                <button (click)="downloadFile('personalpost')" class="btn-primary btn-sm">   <i class="fa fa-cloud-download"></i>   </button>
                  حوالات شخصيه: {{ personalpost }}</div>
               <div class="col-4" *ngIf="internalpost>0">
-                  <a href="#"> <i class="fa fa-file"></i>  </a>
-                  <a href="#">  <i class="fa fa-cloud-download"></i>   </a>
+                  <!-- <a href="#"> <i class="fa fa-file"></i>  </a> -->
+                  <button (click)="downloadFile('post')" class="btn-primary btn-sm">  <i class="fa fa-cloud-download"></i>   </button>
                 حوالة صراف: {{ internalpost }}</div>
             </div>
 
@@ -215,8 +216,8 @@
         <th><input type="text" name="department" id=" " placeholder="أبحث بالقسم" class="form-control " [(ngModel)]="searchFilterData.department" (ngModelChange)="updateFilters()"></th>
         <th><input type="text" name="collage" id=" " placeholder="أبحث الكليه" class="form-control"  [(ngModel)]="searchFilterData.collage" (ngModelChange)="updateFilters()"></th>
         <th><input type="text" name="paymentMethod" id=" " placeholder="أبحث وسيلة الدفع" class="form-control"  [(ngModel)]="searchFilterData.paymentMethod" (ngModelChange)="updateFilters()" ></th>
-        <th><input type="text" name="employeeName" id=" " [(ngModel)]="searchFilterData.employeeName" (ngModelChange)="updateFilters()" placeholder="أبحث بالأسم" class="form-control"></th>
-        <th class="w-1"><input type="text" name="" id=" " [(ngModel)]="searchFilterData.employeeCode" (ngModelChange)="updateFilters()"  placeholder="أبحث بالكود" class="form-control"></th>
+        <th><input type="text" name="employeeName" id=" " [(ngModel)]="searchFilterData.name" (ngModelChange)="updateFilters()" placeholder="أبحث بالأسم" class="form-control"></th>
+        <th class="w-1"><input type="text" name="" id=" " [(ngModel)]="searchFilterData.code" (ngModelChange)="updateFilters()"  placeholder="أبحث بالكود" class="form-control"></th>
         <th class="w-1"></th>
         <th></th>
 
@@ -241,8 +242,8 @@
   <tbody [@bounce]="sheetData?.data.length">
     <tr
       *ngFor="let row of sheetData?.data | searchFilter
-      :searchFilterData.employeeName
-      :searchFilterData.employeeCode
+      :searchFilterData.name
+      :searchFilterData.code
       :searchFilterData.paymentMethod
       :searchFilterData.collage
       :searchFilterData.department
@@ -322,7 +323,7 @@
         </table>
       </td>
       <td>{{ row?.net }}</td>
-
+      <td>{{ row?.employeeData?.grade }}</td>
       <td>{{ row?.employeeData?.department?.name }}</td>
       <td>{{ row?.employeeData.collage }}</td>
       <td>
@@ -364,3 +365,4 @@
     </tr>
   </tbody>
 </table>
+

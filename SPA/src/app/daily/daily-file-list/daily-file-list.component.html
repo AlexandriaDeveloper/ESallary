@@ -1,0 +1,131 @@
+<div class="">
+  <div id="test" class="d-flex justify-content-end">
+    عدد الأستمارات التى تم العثور عليها :
+    {{ pagination.TotalItems }}
+  </div>
+  <!-- <div id="test" class="text-right m-4">
+    <button type="button" class="btn btn-primary" (click)="openSerachModel()">
+      بحث متقدم <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+  </div> -->
+  <table class="table table-striped table-inverse ">
+    <thead class="thead-inverse ">
+      <tr class="">
+        <th colspan="10">
+          <div class="form-group ">
+            <input
+              tabindex="2"
+              id="nationalId"
+              autocomplete="off"
+              type="text"
+              class="form-control"
+              placeholder=" البحث بالاسم أو رقم 224 او رقم 55"
+              #name
+              [(ngModel)]="params.name"
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <thead class="thead-inverse text-right">
+      
+      <tr class="">
+        <th>مدخل البيانات</th>
+        <th>صافى الأستمارة</th>
+        <th>تاريخ الاستحقاق</th>
+        <th>رقم 224</th>
+        <th>الكليه</th>
+        <th>مدفوعه</th>
+        <th>الأسم</th>
+        <th>تاريخ الأنشاء</th>
+        <th>رقم 55</th>
+        <th>
+          <button (click)="newFile()" class="btn btn-success">
+            ملف جديد
+            <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody [@bounce]="fileList.length">
+      <tr *ngFor="let item of fileList" class="text-right">
+        <td>
+          {{ item.entryName }}
+        </td>
+        <td>{{ item.totalSum }}</td>
+        <td>{{ item.reservedDate | date }}</td>
+        <td>{{ item.fileNum224 }}</td>
+        <td>{{ item.collageName }}</td>
+        <td>{{ item.paymentType }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.createdDate | date }}</td>
+        <td>{{ item.fileNum55 }}</td>
+        <td scope="row">
+          <div class="btn-group" role="group" aria-label="">
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="deleteFile(item)"
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+            <a
+              type="button"
+              [routerLink]="['/daily/files/' + item.id]"
+              class="btn btn-file"
+              ><i class="fa fa-file"></i
+            ></a>
+
+            <button
+              [disabled]="!item.open"
+              (click)="updateFile(item)"
+              type="button"
+              class="btn btn-primary"
+            >
+              <!-- <i class="fa fa-info"></i> -->
+              <i *ngIf="!item.open" class="fa fa-lock" alt="مغلق"></i>
+              <i *ngIf="item.open" class="fa fa-unlock"></i>
+            </button>
+          </div>
+        </td>
+
+        <!--{ "id": 1, "name": "مرتبات مؤقتين مندوب صرف", "paymentMethod": "دائن", "paymentType": "3-مرتب تحويلات بنكية", "dailyId": null, "fileTypeId": 1, "collageName": "طب بشرى", "totalSum": 14474.1, "fileNum55": "1501", "fileNum224": null, "entryName": "seagull" }-->
+      </tr>
+    </tbody>
+  </table>
+
+  <nav class="navbar fixed-bottom  navbar-light bg-nav">
+    <div class="d-flex justify-content-center  ml-auto">
+      <pagination
+        [boundaryLinks]="true"
+        [totalItems]="pagination.TotalItems"
+        [(ngModel)]="pagination.CurrentPage"
+        [itemsPerPage]="pagination.ItemsPerPage"
+        [maxSize]="maxSize"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;"
+      >
+      </pagination>
+    </div>
+  </nav>
+</div>
+<nav class="navbar fixed-bottom  navbar-light bg-nav">
+  <div class="d-flex justify-content-center  ml-auto">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.TotalItems"
+      [(ngModel)]="pagination.CurrentPage"
+      [itemsPerPage]="pagination.ItemsPerPage"
+      [maxSize]="maxSize"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
+</nav>

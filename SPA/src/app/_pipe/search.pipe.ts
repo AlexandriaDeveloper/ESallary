@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { e } from '@angular/core/src/render3';
+
 
 @Pipe({
   name: 'searchFilter'
@@ -32,11 +32,11 @@ export class SearchPipe implements PipeTransform {
     }
 
     if (value !== '') {
-      result = result.filter(it => it.employeeName.startsWith(value));
+      result = result.filter(it => it.employeeData.name.startsWith(value));
     }
     if (value2 !== '') {
       result = result.filter(it => {
-        return this.checkNullMethod(it, 'code', value2);
+        return this.checkNestedNullMethod(it, 'code', value2);
       });
     }
     if (value3 !== '') {
@@ -46,17 +46,20 @@ export class SearchPipe implements PipeTransform {
     }
     if (value4 !== '') {
       result = result.filter(it => {
-        return this.checkNullMethod(it, 'collage', value4);
+        return this.checkNestedNullMethod(it, 'collage', value4);
       });
     }
     if (value5 !== '') {
+
       result = result.filter(it => {
-        return this.checkNullMethod(it, 'department', value5);
+        if (it.employeeData.department !== null) {
+          return it.employeeData.department.name.toString().includes(value5);
+        }
       });
     }
     if (value6 !== '') {
       result = result.filter(it => {
-        return this.checkNullMethod(it, 'position', value6);
+        return this.checkNestedNullMethod(it, 'grade', value6);
       });
     }
     if (value7 !== '') {
@@ -71,5 +74,10 @@ export class SearchPipe implements PipeTransform {
     if (data[prop] !== null) {
       return data[prop].toString().includes(value);
     }
+  }
+    private checkNestedNullMethod(data: any, prop: string, value) {
+      if (data.employeeData[prop] !== null) {
+        return data.employeeData[prop].toString().includes(value);
+      }
   }
 }

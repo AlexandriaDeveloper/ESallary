@@ -33,8 +33,10 @@ import { Router } from '@angular/router';
 })
 export class EmployeeAddComponent implements OnInit {
   empForm: FormGroup;
-  @ViewChild('department') public ngDepartmentSelect: NgxSelectComponent;
-  @ViewChild('collage') public ngCollageSelect: NgxSelectComponent;
+  @ViewChild('department', { static: false })
+  public ngDepartmentSelect: NgxSelectComponent;
+  @ViewChild('collage', { static: false })
+  public ngCollageSelect: NgxSelectComponent;
   collageList: any;
   gradeList: any;
   departmentList: any;

@@ -1,0 +1,164 @@
+<div  class="modal-header">
+  <div class="pull-left">تعديل بيانات الملف</div>
+
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div  class="modal-body modal-lg">
+  <div class="">
+    <form [formGroup]="editFileForm" (ngSubmit)="onSubmit()">
+      <div class="form-group text-right">
+        <label for="">بيان الملف </label>
+        <textarea
+          class="form-control"
+          name="name"
+          formControlName="name"
+          placeholder="أدخل بيان الأستمارة"
+        ></textarea>
+        <small
+          *ngIf="
+            editFileForm.get('name').hasError('required') &&
+            editFileForm.get('name').touched
+          "
+          id="helpId"
+          class="form-text text-muted"
+          >يجب إدخال بيان الملف لا يمكن تركه فارغا</small
+        >
+      </div>
+
+      <div class="form-group text-right">
+        <label for="">رقم 55</label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id=""
+          aria-describedby="helpId"
+          formControlName="fileNum55"
+          placeholder=""
+        />
+        <small
+          *ngIf="
+            editFileForm.get('fileNum55').hasError('required') &&
+            editFileForm.get('fileNum55').touched
+          "
+          id="helpId"
+          class="form-text text-muted"
+          >من فضلك قم بإدخال رقم 55 الخاص بالاستمارة</small
+        >
+      </div>
+
+      <div class="form-group text-right">
+        <div class="name pl-3 align-middle text-right">
+          نوع الأستمارة
+          <i class="fa fa-university"></i>
+        </div>
+        <div class="input-group-prepend ">
+          <button
+            class="btn btn-sm btn-outline-primary"
+            (click)="openModal2()"
+            type="button"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+          <ngx-select
+            #fileType
+            [optionValueField]="id"
+            optionTextField="name"
+            class="col-md  p-0"
+            [items]="filesType"
+            name="payment-type"
+            formControlName="fileTypeName"
+          >
+          </ngx-select>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <div class="name pl-3 align-middle text-right">
+          الكلية
+          <i class="fa fa-map"></i>
+        </div>
+        <div class="input-group-prepend ">
+          <ngx-select
+            [optionTextField]="fileData.collageName"
+            class="col-md  p-0"
+            [items]="collagesNameList"
+            name="payment-type"
+            formControlName="collageName"
+            (select)="onChange($event)"
+          >
+          </ngx-select>
+        </div>
+      </div>
+
+      <div class="form-group text-right">
+        <div class="name pl-3 align-middle text-right">
+          الباب الموازنى
+          <i class="fa fa-map"></i>
+        </div>
+        <div class="input-group-prepend ">
+          <ngx-select
+            [optionTextField]="fileData.paymentMethod"
+            class="col-md  p-0"
+            [items]="paymetMethodList"
+            name="payment-type"
+            formControlName="paymentMethod"
+            (select)="onChange($event)"
+          >
+          </ngx-select>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <div class="name pl-3 align-middle text-right">
+          نوع المدفوعه <i class="fa fa-cc-visa"></i>
+        </div>
+        <div class="input-group-prepend ">
+         <ngx-select
+            [optionTextField]="fileData.paymentType"
+            class="col-md  p-0"
+            [items]="paymetTypelist"
+            name="payment-type"
+            formControlName="paymentType"
+            (select)="onChange($event)"
+          >
+          </ngx-select>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <label for=""> صافى الأستمارة </label>
+        <input
+          type="text"
+          class="form-control"
+          name=""
+          id=""
+          aria-describedby="helpId"
+          formControlName="totalSum"
+          placeholder=""
+        />
+        <small
+          *ngIf="
+            editFileForm.get('totalSum').hasError('required') &&
+            editFileForm.get('totalSum').touched
+          "
+          id="helpId"
+          class="form-text text-muted"
+          >من فضلك قم بإدخال رقم 55 الخاص بالاستمارة</small
+        >
+      </div>
+
+      <div class="form-row  d-flex justify-content-center">
+        <div class="">
+          <button type="submit" class="btn btn-primary bg-success ">
+            حفظ بيان الأستمارة <i class="fa fa-save"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
